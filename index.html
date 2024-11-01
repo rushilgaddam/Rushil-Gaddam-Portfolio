@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My STEM Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Welcome to My STEM Portfolio</h1>
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="#about" class="nav-link">About Me</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#research" class="nav-link">Research</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="about" class="section about-section">
+        <div class="section-container">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-text">Hi! I'm Rushil Gaddam, a passionate STEM student interested in programming, data science, and AI! I love solving problems and creating innovative solutions that can positively impact the world.</p>
+        </div>
+    </section>
+
+    <!-- Projects Section with 4 Project Cards -->
+    <section id="projects" class="section projects-section">
+        <div class="section-container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card" onclick="toggleDescription('project1')">
+                    <img src="/Users/admin/Desktop/Leary/Stress_Strain.jpg" alt="Project 1 Mizzou" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">1st Project!</h3>
+                        <p class="project-description">Click for details!</p>
+                    </div>
+                    <div class="project-description-text" id="project1-description" style="display:none;"></div>
+                </div>
+                <div class="project-card" onclick="toggleDescription('project2')">
+                    <img src="/Users/admin/Desktop/Screenshot 2024-10-31 at 9.01.59 PM.png" alt="Project 2 Mizzou" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">2nd Project!</h3>
+                        <p class="project-description">Click for details!</p>
+                    </div>
+                    <div class="project-description-text" id="project2-description" style="display:none;"></div>
+                </div>
+                <div class="project-card" onclick="toggleDescription('project3')">
+                    <img src="/Users/admin/Desktop/NCH data/out/lattice_Killer_CD8+_T-cells_Sup_f02.png" alt="Project 1 Nationwide" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">3rd Project!</h3>
+                        <p class="project-description">Click for details!</p>
+                    </div>
+                    <div class="project-description-text" id="project3-description" style="display:none;"></div>
+                </div>
+                <div class="project-card" onclick="toggleDescription('project4')">
+                    <img src="/Users/admin/Desktop/Screenshot 2024-10-31 at 9.16.54 PM.png" alt="Project 1 website" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">4th Project!</h3>
+                        <p class="project-description">Click for details!</p>
+                    </div>
+                    <div class="project-description-text" id="project4-description" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section with 2 Research Cards -->
+    <section id="research" class="section research-section">
+        <div class="section-container">
+            <h2 class="section-title">Research</h2>
+            <div class="research-grid">
+                <div class="research-card" onclick="toggleDescription('research1')">
+                    <img src="/Users/admin/Desktop/Screenshot 2024-10-31 at 9.35.12 PM.png" alt="Research 1" class="research-image">
+                    <div class="research-info">
+                        <h3 class="research-title">Research on AI in Education</h3>
+                        <p class="research-description">Click for details!</p>
+                    </div>
+                    <div class="research-description-text" id="research1-description" style="display:none;"></div>
+                </div>
+                <div class="research-card" onclick="toggleDescription('research2')">
+                    <img src="" alt="Research 2" class="research-image">
+                    <div class="research-info">
+                        <h3 class="research-title">Manuscript about 3D Biplanar Reconstructions</h3>
+                        <p class="research-description">Click for details!</p>
+                    </div>
+                    <div class="research-description-text" id="research2-description" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <div class="section-container">
+            <h2 class="section-title">Contact Me</h2>
+            <p class="section-text">If you'd like to get in touch, feel free to reach out via email or connect with me on social media!</p>
+            <ul class="contact-list">
+                <li>Email: <a href="mailto:rushilgaddam5@gmail.com" class="contact-link">rushilgaddam5@gmail.com</a></li>
+                <li>LinkedIn: <a href="malito:614-653-1305" class="contact-link">614-653-1305</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-text">&copy; 2024 Rushil Gaddam.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleDescription(type) {
+            let descriptionElement;
+
+            if (type.startsWith('project')) {
+                descriptionElement = document.getElementById(`${type}-description`);
+                if (descriptionElement.style.display === "none") {
+                    // Show description
+                    descriptionElement.innerHTML = getProjectDescription(type);
+                    descriptionElement.style.display = "block";
+                } else {
+                    // Hide description
+                    descriptionElement.style.display = "none";
+                }
+            } else if (type.startsWith('research')) {
+                descriptionElement = document.getElementById(`${type}-description`);
+                if (descriptionElement.style.display === "none") {
+                    // Show description
+                    descriptionElement.innerHTML = getResearchDescription(type);
+                    descriptionElement.style.display = "block";
+                } else {
+                    // Hide description
+                    descriptionElement.style.display = "none";
+                }
+            }
+        }
+
+        function getProjectDescription(type) {
+            switch (type) {
+                case 'project1':
+                    return 'This project aims to analyze stress-strain data collected from material testing, specifically focusing on determining key mechanical properties such as ultimate strength, yield strength, and stiffness.';
+                case 'project2':
+                    return 'This project serves as an essential tool for medical researchers, clinicians, or physicians, dealing with scoliosis data.';
+                case 'project3':
+                    return 'This project aims to find densities and non-symmetric calculations among cancer cells that is currently pending.';
+                case 'project4':
+                    return 'This website helps students at tOSU connect with faculty to find research.';
+                default:
+                    return '';
+            }
+        }
+
+        function getResearchDescription(type) {
+            switch (type) {
+                case 'research1':
+                    return 'This publication discusses AI tutoring systems as effective replacements for traditional tutors.';
+                case 'research2':
+                    return 'This manuscript is currently in process and will discuss the details and findings from project #2.';
+                default:
+                    return '';
+            }
+        }
+    </script>
+</body>
+</html>
