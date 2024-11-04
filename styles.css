@@ -191,25 +191,25 @@ textarea:focus {
     color: #007bff; /* Highlight professor names */
 }
 
-/* Projects Section */
-#projects {
+/* Projects and Research Sections */
+#projects, #research {
     padding: 40px 0;
 }
 
-.projects-title {
+.projects-title, .research-title {
     text-align: center;
     font-size: 2em;
     color: #1a1a1a;
     margin-bottom: 20px;
 }
 
-.projects-grid {
+.projects-grid, .research-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
     gap: 20px;
 }
 
-.project-card {
+.project-card, .research-card {
     background-color: #e9ecef;
     border: 2px solid #dee2e6;
     border-radius: 10px;
@@ -220,32 +220,25 @@ textarea:focus {
     color: inherit;
 }
 
-.project-card:hover {
+.project-card:hover, .research-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.project-image {
+.project-image, .research-image {
     width: 100%;
     height: 150px;
     object-fit: cover;
 }
 
-.project-info {
+.project-info, .research-info {
     padding: 10px;
     text-align: center;
 }
 
-.project-title {
+.project-title, .research-title {
     font-size: 1.2em;
     color: #007bff;
-}
-
-/* Responsive Design for Projects Section */
-@media (max-width: 768px) {
-    .projects-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* Responsive Design */
@@ -267,8 +260,12 @@ textarea:focus {
         font-size: 1.5em;
     }
 
-    .box, .professor-card {
+    .box, .professor-card, .project-card, .research-card {
         padding: 15px; /* Adjust box padding for smaller screens */
+    }
+
+    .projects-grid, .research-grid {
+        grid-template-columns: 1fr; /* Single column layout */
     }
 }
 
@@ -282,96 +279,6 @@ textarea:focus {
         margin: 10px 0; /* Space around buttons */
     }
 }
-/* Research Section */
-#research {
-    padding: 40px 0;
-}
 
-.research-title {
-    text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    margin-bottom: 20px;
-}
-
-.research-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 20px;
-}
-
-.research-card {
-    background-color: #e9ecef;
-    border: 2px solid #dee2e6;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-}
-
-.research-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.research-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.research-info {
-    padding: 10px;
-    text-align: center;
-}
-
-.research-title {
-    font-size: 1.2em;
-    color: #007bff;
-}
-
-/* Responsive Design for Research Section */
-@media (max-width: 768px) {
-    .research-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column; /* Stack navbar items vertically */
-        align-items: center;
-    }
-
-    .container {
-        padding: 15px; /* Less padding on smaller screens */
-    }
-
-    h1 {
-        font-size: 2em; /* Smaller heading */
-    }
-
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .box, .professor-card {
-        padding: 15px; /* Adjust box padding for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.8em; /* Further decrease heading size */
-    }
-
-    .button {
-        width: 100%; /* Full width buttons on mobile */
-        margin: 10px 0; /* Space around buttons */
-    }
-}
 
 
