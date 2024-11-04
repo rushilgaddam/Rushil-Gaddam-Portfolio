@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styling for the project header */
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* Styling for image gallery section */
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        /* Styling for individual image boxes */
+        .image-box {
+            width: 250px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .image-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .image-box figcaption {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Explanation and code section styling */
+        .explanation {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .code-container {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+            overflow-x: auto;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Project Details</h1>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <!-- Image Gallery Section -->
+    <section class="image-gallery">
+        <!-- Image 1 -->
+        <figure class="image-box">
+            <img src="/Users/admin/Desktop/NCH data/out/activated_helper_t-cells_density_deep.png" alt="uno">
+            <figcaption>Density calculations for activated helper t-cells at a deep density</figcaption>
+        </figure>
+        
+        <!-- Image 2 -->
+        <figure class="image-box">
+            <img src="/Users/admin/Desktop/NCH data/out/helper_t-cells_density_sup.png" alt="dos">
+            <figcaption>Density calculations for inhibitory helper t-cells at a superficial density</figcaption>
+        </figure>
+        
+        <!-- Image 3 -->
+        <figure class="image-box">
+            <img src="/Users/admin/Desktop/NCH data/out/killer_cd8+_t-cells_density_deep.png" alt="treis">
+            <figcaption>Density calculations for killer t-cells at a deep density</figcaption>
+        </figure>
+        
+        <!-- Image 4 -->
+        <figure class="image-box">
+            <img src="/Users/admin/Desktop/NCH data/out/exhausted_killer_t-cells_density_sup.png" alt="quatro">
+            <figcaption>Density calculations for exhausted killer t-cells at a density superficial</figcaption>
+        </figure>
+    </section>
+
+    <!-- Explanation and Code Section -->
+    <section class="explanation">
+        <h2>Project Explanation</h2>
+        <p> In cancer, immune cells often infiltrate tumors, either to attack the cancer cells or, unfortunately, to become suppressed by the tumor's defensive mechanisms. Calculating cell density, which measures the number of specific cells within a given area, provides insights into the level and intensity of immune response in various regions of the tumor. For example, a higher density of CD8+ killer t-cells may indicate a strong immune response aimed at targeting cancer cells. These densities were compared among gender and deep or superficial tissue
+        </p>
+        
+        
+        </div>
+    </section>
+</body>
+</html>
