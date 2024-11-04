@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 2 Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styling for the project details section */
+        .project-details {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* CSV data viewer */
+        .csv-container {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        .csv-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .csv-container th, .csv-container td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .csv-container caption {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Scrollable code container */
+        .code-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        /* Excel link box styling */
+        .excel-link {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .excel-link h2 {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .excel-link a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .excel-link a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Project 2: Automated extraction & organization of 3D Reconstructions</h1>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <section class="project-details">
+        <!-- Image with caption -->
+        <figure>
+            <img src="/Users/admin/Downloads/GUI 663x256.png" alt="GUI">
+            <figcaption>This GUI helps physicians extract measurement data taken from multiple assessments for an individual and/or many individuals, and the files that are inputted must be Full Spine 3D Reconstructions in sterEOS and named and organized in a specified format.</figcaption>
+        </figure>
+    
+        <!-- Additional Images with captions -->
+        <figure>
+            <img src="/Users/admin/Desktop/Screenshot 2024-11-02 at 11.07.51 PM.png" alt="Apex Data">
+            <figcaption>The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data </figcaption>
+        </figure>
+
+        <!-- Link to Excel file -->
+        <div class="excel-link">
+            <h2>Download the Excel File</h2>
+            <a href="/Users/admin/Downloads/Project 1 Merged Data Template.xlsx" download>Click here to download the Excel file that shows how files are organized in excel for multiple patients!</a>
+        </div>
+    </section>
+</body>
+</html>
+
+    <!-- Scrollable Code Section -->
+    <div class="code-container">
+        <pre>
+            # -*- coding: utf-8 -*-
+"""
+Created on Wed Sep  4 08:56:39 2024
+
+@author: lijinp
+"""
+
+
+from datetime import date
+from itertools import accumulate
+import base64
+import os
+import pandas as pd
+import openpyxl
+import numpy as np
+from openpyxl.styles import PatternFill
+import tkinter as tk
+from tkinter import filedialog
+import tkinter.messagebox as messagebox
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+#Main Function
+def table_split(input_file):
+    # Get absolute path of the input file
+    input_file = os.path.abspath(input_file)
+    
+    # Read the Excel file and the specific sheet into a DataFrame
+    input_data_raw = pd.ExcelFile(input_file)
+    input_data_all = input_data_raw.parse(sheet_name="Advanced")
+    
+    # Count non-missing values in each row
+    num_non_na_row = np.logical_not(input_data_all.isnull()).sum(axis=1).tolist()
+    
+    # Identify start rows for new tables based on empty rows
+    table_start_rows = [i + 1 for i in range(len(num_non_na_row) - 1) if num_non_na_row[i] == 0 and num_non_na_row[i + 1] != 0]
+    table_start_rows_start = [0] + table_start_rows
+    table_start_rows_end = table_start_rows + [len(num_non_na_row)]
+    
+    # List to hold split tables
+    input_data_subs = []
+    
+    # Split the raw data into multiple tables
+    for table_index in range(len(table_start_rows) + 1):
+        # Extract each sub-table
+        input_data_sub = input_data_raw.parse(
+            sheet_name="Advanced", 
+            skiprows=table_start_rows_start[table_index], 
+            nrows=table_start_rows_end[table_index] - table_start_rows_start[table_index]
+        )
+        
+        # Drop columns with all NaN values
+        input_data_sub.dropna(how='all', axis=1, inplace=True)
+        
+        # Drop rows with all NaN values for the first table
+        if table_index == 0:
+            input_data_sub.dropna(how='all', axis=0, inplace=True)
+        
+        # Add the sub-table to the list if it has more than one row
+        if len(input_data_sub) > 1:
+            input_data_subs.append(input_data_sub)
+    
+    return input_data_subs
+
+
+
+# the method table1_extract extracts data from InputTable and reformats it and returns a list called Table1_Out
+def table1_extract(input_table):
+    table1_out = []
+    
+    for i in range(3):
+        if len(input_table) > i * 2 + 2:
+            # Extracting rows and converting to list
+            row1 = input_table.iloc[i * 2 + 1].to_list()
+            row2 = input_table.iloc[i * 2 + 2].to_list()
+            
+            # Extracting and formatting Cobb info
+            cobb_info = row1[0].split("(")[1].split(")")[0].split("-")[0:3]
+            
+            # Combining the extracted data into a single row for output
+            combined_row = [cobb_info[0] + "-" + cobb_info[2]] + row1[1:3] + [cobb_info[1]] + row2[1:3]
+            table1_out += combined_row
+        else:
+            # If not enough rows, add empty strings to maintain structure
+            table1_out += [""] * 6
+            
+    return table1_out
+    
+# define a function to extract data for other tables
+def table_extract(input_table, header = 1):
+    # Extract data from the specified header row to the end, starting from the second column
+    table_out = input_table.iloc[header:input_table.shape[0], 1:input_table.shape[1]].values.flatten().tolist()
+    return table_out
+
+def datamerge(InputPath=None, OutputPath=None, ApexPath = None):
+
+    # Initialize headers for tables
+    table_1_header = [f"{a}{b}{c}" for a in ["Lumbar", "Main", "Proximal"] for b in ["Cobb", "Apex"] for c in ["", "PP", "RP"]]
+    table_2_header = [f"{a}{b}{c}" for a in ["KyphosisT1", "KyphosisT4", "LordosisL5", "LordosisS1"] for b in ["PP", "RP"] for c in [""]]
+    table_3_header = [f"{a}{b}{c}" for a in ["RotationT" + str(i) for i in range(1, 13)] + ["RotationL" + str(i) for i in range(1, 6)] for b in ["PP", "RP"] for c in ["Frontal", "Lateral", "Axial"]]
+    table_4_header_add = [f"T{i}-T{i+1}" for i in range(1, 13)] + [f"L{i}-L{i+1}" for i in range(1, 5)]
+    table_4_header = [f"IntervertebralRotation{a}{b}{c}" for a in table_4_header_add for b in ["RP"] for c in ["Frontal", "Lateral", "Axial"]]
+    table_5_header = [f"{a}{b}" for a in ["PelvicIncidence", "SacralSlope", "PelvicTilt", "PelvicObliquity", "AxialPelvicRotation"] for b in ["PP", "RP"]]
+
+    # Merge all headers into a single list
+    output_data = [["Patient ID", "Visit Date"] + table_1_header + table_2_header + table_3_header + table_4_header + table_5_header]
+
+    # List all patient IDs in the input path
+    patient_ids = os.listdir(InputPath)   
+
+    for patient_id in patient_ids:
+        # Create subfolder path for each patient
+        sub_folder = os.path.join(InputPath, patient_id)
+
+        # List all visit numbers for the patient
+        visit_nums = os.listdir(sub_folder)
+
+        for visit_num in visit_nums:
+            # Create sub-subfolder path for each visit
+            sub_sub_folder = os.path.abspath(os.path.join(sub_folder, visit_num))
+
+            # List all .xlsx files in the sub-subfolder
+            file_names = [f for f in os.listdir(sub_sub_folder) if f.lower().endswith(".xlsx")]
+
+            # Check for correct number of .xlsx files
+            if len(file_names) != 1:
+                if len(file_names) == 0:
+                    messagebox.showinfo("Error", f"There is no .xlsx file in folder {sub_sub_folder}")
+                    raise ValueError(f"There is no .xlsx file in folder {sub_sub_folder}")
+                else:
+                    messagebox.showinfo("Error", f"There are more than one .xlsx files in folder {sub_sub_folder}")
+                    raise ValueError(f"There are more than one .xlsx files in folder {sub_sub_folder}")
+
+            # Create visit date
+            visit_date_parts = visit_num.split("-")
+            if len(visit_date_parts) == 3:
+                visit_date = visit_date_parts[2] + visit_date_parts[0] + visit_date_parts[1]
+            else:
+                visit_date = visit_num
+                messagebox.showinfo("Warning", f"The format of visit date {visit_num} is incorrect for patient {patient_id}. It should be MM-DD-YYYY")
+
+            # Split the raw data into several tables
+            input_data_all = table_split(os.path.join(sub_sub_folder, file_names[0]))
+
+            # Extract data from tables
+            table1 = table1_extract(input_data_all[0])
+            table2 = table_extract(input_data_all[1], header=1)
+            table3 = table_extract(input_data_all[2], header=2)
+            table4 = table_extract(input_data_all[3], header=2)
+            table5 = table_extract(input_data_all[4], header=1)
+
+            # Create a list for each visit's data and append to output_data
+            output_data_unit = [patient_id, visit_date] + table1 + table2 + table3 + table4 + table5
+            output_data.append(output_data_unit)
+    
+    # Create an Excel workbook
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Merged Data"
+
+    # Append rows to the worksheet
+    for row in output_data:
+        ws.append(row)
+    
+    # Define cell styles
+    colors = ["E0E0E0", "FFCCCC", "FFFFCC", "CCFFCC", "CCFFFF", "E5CCFF"]
+    cell_col = [2, 18, 8, 102, 48, 10]
+    cell_col = [(0, col) for col in [0] + list(accumulate(cell_col))[:5]]
+
+    # Create data dictionary
+    data_dict = ["Basic Information", " "] + ["Scoliosis Parameters"] + [" "] * 17 + ["Sagittal Balance"] + [" "] * 7 + ["Vertebral Orientations"] + [" "] * 101 + ["Intervertebral Rotations"] + [" "] * 47 + ["Pelvic Parameters"] + [" "] * 9
+    variable_names = output_data[0]
+
+    table_1_exp = [f"{angle} of {category} {plane}" for category in ["lumbar scoliosis", "main scoliosis", "proximal scoliosis"] for angle in ["cobb angle", "axial rotation of apical vertebra"] for plane in ["parameters", "- patient plane", "- radio plane"]]
+    table_2_exp = [f"{a} - {b}" for a in ["T1/T12 Kyphosis", "T4/T12 Kyphosis", "L1/L5 Lordosis", "L1/S1 Lordosis"] for b in ["patient plane", "radio plane"]]
+    table_3_exp = [f"{a} rotation - {c} {b}" for a in ["T" + str(i) for i in range(1, 13)] + ["L" + str(i) for i in range(1, 6)] for b in ["patient plane", "radio plane"] for c in ["frontal", "lateral", "axial"]]
+    table_4_exp_header_add = [Cobb1 + "-" + Cobb2 for Cobb1, Cobb2 in zip(["T" + str(i) for i in range(1, 13)] + ["L" + str(i) for i in range(1, 5)], ["T" + str(i) for i in range(2, 13)] + ["L" + str(i) for i in range(1, 6)])]
+    table_4_exp = [f"{a} intervertebral rotation - {c} {b}" for a in table_4_exp_header_add for b in ["radio plane"] for c in ["frontal", "lateral", "axial"]]
+    table_5_exp = [f"{a} {b}" for a in ["Pelvic incidence", "Sacral slope", "Pelvic tilt", "Pelvic obliquity", "Axial pelvic rotation"] for b in ["patient plane", "radio plane"]]
+    explanations = ["Patient ID, specified by the folder names", "Visit date, specified by the folder names"] + table_1_exp + table_2_exp + table_3_exp + table_4_exp + table_5_exp
+
+    # Create a data frame for the data dictionary
+    data_dict_df = pd.DataFrame({'Table': data_dict, 'Variable Names': variable_names, 'Explanations': explanations})
+
+    # Create a new worksheet for the data dictionary
+    ws_dict = wb.create_sheet("Data Dictionary")
+
+    # Fill the data dictionary worksheet with values and apply colors
+    for i, row in enumerate(data_dict_df.values.tolist()):
+        ws_dict.append(row)
+        if i < 6:
+            fill = PatternFill(start_color=colors[i], end_color=colors[i], fill_type="solid")
+            for col in range(1, 4):
+                ws_dict.cell(row=i + 1, column=col).fill = fill
+
+    # Adjust column widths in the data dictionary sheet
+    ws_dict.column_dimensions['A'].width = 20
+    ws_dict.column_dimensions['B'].width = 40
+    ws_dict.column_dimensions['C'].width = 60
+
+    # Fill the first 2 rows of the data dictionary gray
+    fill_pattern0 = PatternFill(patternType='solid', fgColor='e0e0e0')
+
+    for col in ws_dict.iter_cols(min_row=1, max_row=2, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern0
+
+    # Fill the next 18 rows of the data dictionary red
+    fill_pattern = PatternFill(patternType='solid', fgColor='ffcccc')
+
+    for col in ws_dict.iter_cols(min_row=3, max_row=20, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern
+
+    # Fill the next 8 rows of the data dictionary yellow
+    fill_pattern2 = PatternFill(patternType='solid', fgColor='ffffcc')
+
+    for col in ws_dict.iter_cols(min_row=21, max_row=28, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern2
+
+    # Fill the next 102 rows of the data dictionary green
+    fill_pattern3 = PatternFill(patternType='solid', fgColor='ccffcc')
+
+    for col in ws_dict.iter_cols(min_row=29, max_row=130, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern3
+
+    # Fill the next 48 rows of the data dictionary blue
+    fill_pattern4 = PatternFill(patternType='solid', fgColor='ccffff')
+
+    for col in ws_dict.iter_cols(min_row=131, max_row=178, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern4
+
+    # Fill the next 10 rows of the data dictionary purple
+    fill_pattern5 = PatternFill(patternType='solid', fgColor='e5ccff')
+
+    for col in ws_dict.iter_cols(min_row=179, max_row=188, min_col=1, max_col=3):
+        for cell in col:
+            cell.fill = fill_pattern5
+
+    # Adjust the widths and colors for the Merged Data section
+    ws = wb['Merged Data']
+
+    # Fill the first 2 columns with gray
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=1, max_col=2):
+        for cell in col:
+            cell.fill = fill_pattern0
+
+    # Fill the next 18 columns with red
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=3, max_col=20):
+        for cell in col:
+            cell.fill = fill_pattern
+
+    # Fill the next 8 columns with yellow
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=21, max_col=28):
+        for cell in col:
+            cell.fill = fill_pattern2
+
+    # Fill the next 102 columns with green
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=29, max_col=130):
+        for cell in col:
+            cell.fill = fill_pattern3
+
+    # Fill the next 48 columns with blue
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=131, max_col=178):
+        for cell in col:
+            cell.fill = fill_pattern4
+
+    # Fill the next 18 columns with purple
+    for col in ws.iter_cols(min_row=1, max_row=5, min_col=179, max_col=188):
+        for cell in col:
+            cell.fill = fill_pattern5
+
+
+    if ApexPath:
+        merged_data = pd.DataFrame(output_data[1:], columns=output_data[0])
+        apex_data = pd.read_csv(ApexPath)
+        
+        def apex_diff(index, apex_value, sub_measure, pl, diff, merged_data):
+            apex_values = ["T" + str(i) for i in range(1, 13)] + ["L" + str(i) for i in range(1, 6)]
+            apex_value_index = apex_values.index(apex_value)
+            apex_seq = range(-diff, diff + 1)
+            apex_rotations = []
+
+            for apex_diff_value in apex_seq:
+                adjusted_index = min(apex_value_index + apex_diff_value, len(apex_values) - 1)
+                rotation_col = f"Rotation{apex_values[adjusted_index]}{pl}{sub_measure}"
+                rotation_value = merged_data.at[index, rotation_col]
+                apex_rotations.append(rotation_value)
+
+            return apex_rotations
+
+        # Prepare output data structure
+        output_data_Apex = []
+        diff = 2
+        apex_data['Patient ID'] = apex_data['Patient ID'].astype(str)
+        apex_data['Visit Date'] = apex_data['Visit Date'].astype(str)
+
+        # Loop through each row in the MergedData dataframe
+        for index, row in merged_data.iterrows():          
+            apex_data_sub = apex_data[(apex_data['Patient ID'] == row['Patient ID']) & (apex_data['Visit Date'] == row['Visit Date'])]
+            output_data_unit_new = [row['Patient ID'], row['Visit Date']]
+
+            if not apex_data_sub.empty:
+                apex_data_sub = apex_data_sub.iloc[0]
+                output_data_unit_new += [apex_data_sub['ApexT'], apex_data_sub['ApexL']]
+
+                if pd.notna(apex_data_sub['ApexT']) and apex_data_sub['ApexT'].startswith("T"):
+                    for pl in ["PP", "RP"]:
+                        for sub_measure in ["Frontal", "Lateral", "Axial"]:
+                            output_data_unit_new += apex_diff(index, apex_data_sub['ApexT'], sub_measure, pl, diff, merged_data)
+                else:
+                    output_data_unit_new += [np.nan] * ((diff * 2 + 1) * 6)
+
+                if pd.notna(apex_data_sub['ApexL']) and apex_data_sub['ApexL'].startswith("L"):
+                    for pl in ["PP", "RP"]:
+                        for sub_measure in ["Frontal", "Lateral", "Axial"]:
+                            output_data_unit_new += apex_diff(index, apex_data_sub['ApexL'], sub_measure, pl, diff, merged_data)
+                else:
+                    output_data_unit_new += [np.nan] * ((diff * 2 + 1) * 6)
+            else:
+                output_data_unit_new += [np.nan] * ((diff * 2 + 1) * 12 + 2)
+                
+
+            output_data_Apex.append(output_data_unit_new)
+
+        # Convert the output data to a DataFrame
+        output_columns = ["Patient ID", "Visit Date", "ApexT", "ApexL"]
+        frontal_lateral_axial = ["Frontal", "Lateral", "Axial"]
+        planes = ["T_PP", "T_RP", "L_PP", "L_RP"]
+
+        for pl in planes:
+            for flx in frontal_lateral_axial:
+                output_columns += [f"{flx}_{i}_{pl}" for i in range(-diff, diff + 1)]
+
+        output_df = pd.DataFrame(output_data_Apex, columns=output_columns)
+
+        # Create or update 'Advanced' sheet
+        if "Advanced" in wb.sheetnames:
+            ws = wb["Advanced"]
+            # Clear existing sheet data before adding new data
+            ws.delete_rows(1, ws.max_row)
+        else:
+            ws = wb.create_sheet(title="Advanced")
+
+        for r_idx, row in enumerate(dataframe_to_rows(output_df, index=False, header=True), start=1):
+            ws.append(row)
+
+        # Create or update 'Data Dictionary' sheet
+        if "Data Dictionary" in wb.sheetnames:
+            ws = wb["Data Dictionary"]
+        else:
+            ws = wb.create_sheet(title="Data Dictionary")
+
+        # Create a data dictionary for the advanced data
+        advanced_data_dict = pd.DataFrame({
+            "Advanced": [""] * (len(output_columns)),
+            "Variables": output_columns,
+            "Explanation": [
+                "Patient ID, specified by the folder names", 
+                "Visit date, specified by the folder names",
+                "Thoracic axial rotation of apical vertebra", 
+                "Lumbar axial rotation of apical vertebra"] + 
+                [f"{flx} rotation at Apex {i} level(s) - {pl.split('_')[0].lower()} {pl.split('_')[1].lower()} plane" 
+                 for pl in planes for flx in frontal_lateral_axial for i in range(-diff, diff + 1)]
+        })
+
+        # Determine the starting column for new data (5th column in Excel)
+        start_col = 5
+
+        # Write the new data starting from the 5th column
+        for r_idx, row in enumerate(dataframe_to_rows(advanced_data_dict, index=False, header=True), start=1):
+            for c_idx, value in enumerate(row, start=start_col):
+                ws.cell(row=r_idx, column=c_idx, value=value)
+
+        # Adjust column widths for columns E, F, and G in the "Data Dictionary" sheet
+        ws.column_dimensions['E'].width = 15  # Column E width
+        ws.column_dimensions['F'].width = 20  # Column F width
+        ws.column_dimensions['G'].width = 30  # Column G width
+
+    
+    output_filename = f"MergedData_{str(date.today()).replace('-', '')}.xlsx"
+    wb.save(os.path.join(OutputPath, output_filename))
+
+
+def process_data():
+    # Retrieving the input and output paths entered by the user from the GUI
+    input_path = input_path_entry.get()
+    output_path = output_path_entry.get()
+    apex_file = apex_file_entry.get()
+
+    
+    # Check if input_path, output_path, and apex_file are valid
+    if not input_path or not output_path:
+        messagebox.showinfo("Error", "Invalid directory paths. Please select valid input and output directories.")
+        return  # Exit the function if paths are not valid
+
+    # If Apex file is provided and valid
+    if apex_file:
+        # Run the data merge process with Apex data
+        datamerge(InputPath=input_path, OutputPath=output_path, ApexPath=apex_file)
+    else:
+        # Run the data merge process without Apex data
+        datamerge(InputPath=input_path, OutputPath=output_path)
+
+    # Notify the user that the process is complete
+    messagebox.showinfo("Process Completed", "Data processing completed successfully.")
+
+# Function to browse and set the input directory
+def browse_input_file():
+    input_file = filedialog.askdirectory()
+    if input_file:
+        input_path_entry.delete(0, tk.END)
+        input_path_entry.insert(0, input_file)
+
+# Function to browse and set the output directory
+def browse_output_folder():
+    output_folder = filedialog.askdirectory()
+    if output_folder:
+        output_path_entry.delete(0, tk.END)
+        output_path_entry.insert(0, output_folder)
+
+# Function to browse and set the Apex data file
+def browse_apex_file():
+    apex_file = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+    if apex_file:
+        apex_file_entry.delete(0, tk.END)
+        apex_file_entry.insert(0, apex_file)
+
+# Create main GUI window
+root = tk.Tk()
+root.title("Mizzou 3D SPinE")
+root.configure(background='#F1B82D')
+
+# Create and place input path entry and browse button
+input_path_label = tk.Label(root, text="Input Path:", bg="#F1B82D")
+input_path_label.grid(row=0, column=0, pady=5, padx=5, sticky="E")
+input_path_entry = tk.Entry(root, width=50)
+input_path_entry.grid(row=0, column=1, pady=5, padx=5, sticky="W")
+browse_input_button = tk.Button(root, text="Browse", command=browse_input_file, bg="#F1B82D")
+browse_input_button.grid(row=0, column=2, pady=5, padx=5)
+
+# Create and place output path entry and browse button
+output_path_label = tk.Label(root, text="Output Path:", bg="#F1B82D")
+output_path_label.grid(row=1, column=0, pady=5, padx=5, sticky="E")
+output_path_entry = tk.Entry(root, width=50)
+output_path_entry.grid(row=1, column=1, pady=5, padx=5, sticky="W")
+browse_output_button = tk.Button(root, text="Browse", command=browse_output_folder, bg="#F1B82D")
+browse_output_button.grid(row=1, column=2, pady=5, padx=5)
+
+# Create and place Apex data file entry and browse button
+apex_file_label = tk.Label(root, text="Apex Data File (Optional):", bg="#F1B82D")
+apex_file_label.grid(row=2, column=0, pady=5, padx=5, sticky="E")
+apex_file_entry = tk.Entry(root, width=50)
+apex_file_entry.grid(row=2, column=1, pady=5, padx=5, sticky="W")
+browse_apex_button = tk.Button(root, text="Browse", command=browse_apex_file, bg="#F1B82D")
+browse_apex_button.grid(row=2, column=2, pady=5, padx=5)
+
+# Create example of Apex data
+
+# template details
+class TemplateTable(tk.Frame):  
+    def __init__(self, parent, rows=4, columns=4):
+        tk.Frame.__init__(self, parent, background="black")
+        self._widgets = []
+        
+        # Define the data
+        Template_data = [
+            ["Patient ID", "Visit Date", "ApexT", "ApexL"],
+            [123, 20220101, "T8", None],
+            [124, 20220101, None, "L1"],
+            [124, 20220430, None, "L5"],
+            [124, 20220609, "T9", "L1"]
+        ]
+        
+        # Create the DataFrame
+        Template_df = pd.DataFrame(Template_data)
+        
+        # Populate the table with labels
+        for row in range(rows):
+            current_row = []
+            for column in range(columns):
+                if column == 0:
+                    label = tk.Label(self, text=Template_df.iloc[row, column], 
+                                     borderwidth=0, width=40, bg="#F1B82D")
+                else:
+                    label = tk.Label(self, text=Template_df.iloc[row, column], 
+                                     borderwidth=0, width=10, bg="#F1B82D")
+                label.grid(row=row, column=column, sticky="nsew", padx=1, pady=1)
+                current_row.append(label)
+            self._widgets.append(current_row)
+
+        for column in range(columns):
+            self.grid_columnconfigure(column, weight=1)
+
+    def set(self, row, column, value):
+        widget = self._widgets[row][column]
+        widget.configure(text=value)
+
+def open_help_window():
+    # Create a Toplevel popout window
+    popout = tk.Toplevel()
+    popout.title("Apex Data Example")
+
+    # Add a label with the message
+    message_label = tk.Label(popout, wraplength=800, font=("Arial", 10), justify=tk.LEFT, bg="#F1B82D", padx=10, pady=10, text='In addition to the original data, we also offer the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. The data file should include:\n\n  • a column for the patient identifier (labeled "Patient ID"),\n  • a column for the visit date (labeled "Visit Date"), and\n  • two columns indicating the apex level, either in the thoracic (labeled "ApexT") or lumbar (labeled "ApexL") regions, with each segment identified by a label (e.g., "T1", "T2", ..., "L5").\n\nThe final output provides a comprehensive set of rotation values for each patient and visit, including measurements from the levels directly adjacent to and surrounding the apex, offering a detailed view of spinal curvature dynamics.')
+    message_label.pack(pady=10)
+
+    # Create an instance of TemplateTable in the popout window
+    template_table = TemplateTable(popout)
+    template_table.pack(fill="both", expand=True)
+
+    # Run the popout window's event loop
+    popout.mainloop()
+
+browse_apex_button = tk.Button(root, text="See Apex Example", command=open_help_window, bg="#F1B82D")
+browse_apex_button.grid(row=3, column=0, pady=5, padx=5, sticky="E")
+
+# Create and place merge button
+merge_button = tk.Button(root, text="Merge Data", command=process_data, bg="#F1B82D")
+merge_button.grid(row=3, column=1, pady=15)
+
+icon = "AAABAAEAGSAAAAEAIAAoDQAAFgAAACgAAAAZAAAAQAAAAAEAIAAAAAAAgAwAACIuAAAiLgAAAAAAAAAAAAD+/////v////j6/P/1+Pz//v////7////+/////v///9Pi5/+cvsv/v9Pc//z9/f//////2eXq/52+zP+809z/8/f5/9zo7f/p8fT//f7+//b5/f/x9fr//v////7////+/////v/////////1+Pv/7PH4//z9///+//////////T4+f+nx9P/oMLQ/529y//e5+3/7fL1/6vG0v+iwtD/ocXT/9zo7v/1+fv/+Pv9//z9///u8/r/6e/2//7////+/////v////7/////////9ff6/+Pq9f/5+/7//v////X4+v+91d7/oMXU/9Pi6v+/1N7/mrzL/5q6yP+qx9T/2+ft/6nL2f+ty9j/5e3y//z9///6/P//5u33/+Xr9P///////v////7////+/////v////b4+//d5fL/9fn9//7+///S4ej/n8TU/57D1P+hwtH/o8PR/4+2x/+Otsb/m73N/6bF0/+cwdH/nsXV/7fP2//3+fz/9/r9/9/n9P/m6/P///////7////+/////v////7////5+/z/2uLv//D0+//9/f//ydzl/6DG1/+lxNP/ytvk/6DB0P+Yvs7/mL7O/5m9zf/D1uH/r8rX/5/F1v+yz9z/8fX6//P3/P/a4/H/6u71///////+/////v////7////+/////P39/9nh7v/o7/j/9/r8/7rT3v+hx9f/qMjX/7bP2/+mydj/pMfW/6DE1P+jyNf/sc3Z/6/L2f+hx9f/qMnY/+Xt9P/w9fv/1+Dv/+/z9////////v////7////+/////v////7////b4u7/4Oj1//D1+f+wzNn/osfY/6LI2P+bwdH/pMjX/67O3P+qytn/qcvZ/5vB0f+hx9f/o8jY/6PF1f/b5u//7fP7/9Te7f/09vn///////7////+/////v////7////+////3uTv/9rk8//c5+//psfW/6PI2P+ix9f/ocXU/6bH1v+sy9r/qsrZ/6bH1v+lx9b/n8XV/6PI2P+hxtb/x9nk/+nv+f/Q2uv/9vn7//7////+/////v////7////+/////////+Pp8f/O2+z/s8/e/6LH1/+jyNj/ocbW/5zAz/+Wucn/mrvK/528y/+Tt8f/n8HQ/57D0/+jyNj/osjY/6rL2v/R3+3/z9jp//v8/f/+/////v////7////+/////v/////////u8fb/ydXo/6rJ2v+iyNj/o8jY/6LH1v+lxNL/scjU/5i5yP+Wt8b/qsPQ/6/I1f+hxdT/o8jY/6PI2P+kyNf/wNHl/9ff7P/+/////v////7////+/////v////7////+////+vv8/9DZ6f+2zd7/ocXU/6PG1f+rydf/z93n/7rO2v+cvcz/nLzL/6vF0//V4en/t9Db/6HF1P+gxdT/rMjZ/8PQ5f/q7vT///////7////+/////v////7////+/////v/////////h5u//y9fq/9Pg6//W4+z/4uvz/+Ts9P+/0t3/m7vK/5S2xv/F1uD/8PX6//D0+f/d6O7/1+Ts/8/c7P/N1+j/+/z9//7////+/////v////7////+/////v////7////+////9Pb5/8rV5//i6vf/8PX8//D1/P/k7PP/tszY/5i4yP+StMT/scnV/+Tr8f/6/P7/+vz+/+/0+//P2uz/5erx///////+/////v////7////+/////v////7////+/////v////j6/f/S2un/z9rt/+jv+f/v9Pv/y9rk/6vH1P+VuMj/l7nI/8HU3v/v8/j/+fz+//T4/P/h6fb/0drp//j6+//3+f3//P7///7////+/////v////7////9/v///v////3+///z9/z/3OPu/8PQ5v/a5PP/7fP6/+Pr8v+0y9j/m7nJ/569zP/A097/7PH2//j7/v/u8/r/2uTz/9rh7P/9/v7/6/H4//j6/v/+/////f7///3+///+////+vz9//v8/v/5+/7/5u33/9vi7f/Dz+T/1N/x/+fu9//N2+T/rcfU/5m7yv+gvs3/wdLd/+7z9//3+v7/7fP6/9nj8v/V3en/+vz9/9/n8//v9Pv/+vz+//j6/f/7/f7//v////n7/f/z9/z/8PT7/9rj8//V3uv/w8/k/9Pe8P/p8Pn/6O/1/77S3P+busn/o8DP/8za4//y9vr/+Pr+//D1+//c5vT/y9Xm//P2+P/W3+7/5e33//L2/P/w9fr//P3+//7////5+/3/7PH5/+jv+f/W4PH/zdfn/8TP4//U3/D/6/H6/+vx9v+90Nv/mbvK/5i5yP/G1uD/9fj8//n7/v/z9/z/4ur2/8fT5//k6fD/ztnr/9/o9f/p7/n/6vD4//3+/v/+////+fv9/+ft9//k7Pf/1+Hy/8fS5v/Dz+P/1+Ly/+7z+v/y9vr/2eTr/6XC0P+avMv/utDb//L2+f/6/P7/9fj9/+bt+P/K1ur/0trn/8rW6v/d5vX/4uv3/+bs9v/+/////v////n7/f/j6vX/4en3/9nj8//F0eb/w87i/97m9f/w9fv/+Pr+/+Xt8v+oxdP/krXF/6nF0v/u8/f/+vz+//b5/f/p8Pn/0Nvu/8HM3//J1er/2+X0/97n9f/k6/T//v////7////7/P3/4ej0/97o9v/b5PT/x9To/8HN4f/k7Pf/8/f8//f6/v/1+Pz/xNbg/5a5yf+Qs8P/1+Pq//r8///2+f3/7PL6/9bh8f+2xNv/ydXq/9rk8//a4/P/5ev0///////+/////P7+/+Dn8v/c5vX/3OX0/8zX6v/F0OP/6vD5//X4/P/4+v7/9vn9/9bi6/+au8r/j7PD/8PV3//2+fz/9/n9/+70+//c5fT/usff/8vX6//a5PP/1uDx/+jt9P///////v////7////h6PL/2+T0/93m9f/U3u//0dvr/+/0+//3+v3/+Pv9//X5/f/f6PH/o8DP/4yywv+lwM3/7/P3//j6/v/x9vv/4ur2/8TR5f/P2+3/2+T0/9Pe7//s8Pb///////7////+////4+ny/9zl9f/i6vf/3+f0/+Do8//z9/z/+fv+//n7/v/1+f3/5Ov0/6bB0P+LsMH/nrzJ/+rw9f/5+/7/9Pj8/+jv+f/S3O3/1N/w/9vk9P/R3O3/7vH3///////+/////v///+Ho8f/f5/X/5+74/+rw+f/v9Pv/9vn9//r8/v/6/P7/9vn9/+rw9/+uxtT/ia/A/6G+zP/p7/T/+fv+//b5/f/t8/r/4Oj2/9zl9P/c5fT/z9rs/+3x9v///////v////7////i6PH/3+j1/+vx+f/w9fv/9fj8//j7/v/7/P//+/z+//j6/f/t8vj/rcbU/460xP+dvMr/5u3y//r7/v/3+f3/8PX7/+bt+P/g6fb/3Ob1/87Z7P/v8vf///////7/////////6e70/9vk8v/s8vr/8vf8//f6/f/6/P7//P3///v8/v/5+/7/7PL3/6vE0v+Ns8P/rcbT//D1+f/5+/7/9vn9//D1+//o7/j/4+v3/9zl9f/R2+v/9vj7///////+//////////X3+v/V3+7/5u34//D1+//3+v3/+/z///z9///7/P//+fv+/+ju9P+gvcv/hqy9/8PU3v/2+f3/+fv9//f5/f/w9fv/6vD5/+Ps9//Y4vL/2uLu//3+/v/+/////v////7////+/v7/3OPu/9fh8f/o7/n/8vf8//n7/v/6/P7/+fv+//j7/v/b5u3/k7XE/42wwP/T3+f/9/r+//j6/f/1+f3/7vP6/+Xs9//c5fT/z9rs/+zw9f///////v////7////+//////////P2+f/O2On/0dzu/+Hp9v/t8/r/8vb8//L3/P/v9Pv/xNXg/42ywv+YuMj/3OXu//H2/P/x9vv/7fL6/+Hp9v/S3e//yNXp/9nh7f/8/f3//v////7////+/////v////7////+////9ff5/93k7v/P2en/0dzt/93m9P/j6/f/3ebz/6G7y/+Gq7z/lrPE/9nj8P/k7Pf/4On2/9bg8P/O2er/1t7r/+js8//7/P3//v////7////+/////v////7////+/////v//////////////9/n6/9rh7P/E0eb/0d3w/9Te7v+Ytcb/iKy+/6G6y//V3/D/0Nvv/8jU5//Z4ez/8vX4//7+/v///////v////7////+/////v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+
+icondata= base64.b64decode(icon)
+tempFile= "icon.ico"
+iconfile= open(tempFile,"wb")
+iconfile.write(icondata)
+iconfile.close()
+
+root.wm_iconbitmap(tempFile)
+
+root.mainloop()
+
+
+        </pre>
+    </div>
+    
+    <footer class="footer">
+        <p class="footer-text">&copy; 2024 Rushil Gaddam.</p>
+    </footer>
+
+    <!-- JavaScript to load and display the CSV data -->
+    <script>
+        async function loadCSV() {
+            try {
+                const response = await fetch('/Users/admin/Downloads/Specimen Raw Data.csv'); // Replace with relative path if needed
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.text();
+                const tableBody = document.querySelector('#csv-table tbody');
+
+                // Split the CSV data into rows
+                const rows = data.split('\n');
+                rows.forEach((row, index) => {
+                    const cols = row.split(',');
+
+                    if (cols.length === 2 && index !== 0) {  // Skip the header row
+                        const tr = document.createElement('tr');
+                        cols.forEach(col => {
+                            const td = document.createElement('td');
+                            td.textContent = col.trim();
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+            }
+        }
+
+        window.onload = loadCSV;
+    </script>
+</body>
+</html>
