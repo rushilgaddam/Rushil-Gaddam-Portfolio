@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1 Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styling for the project details section */
+        .project-details {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* CSV table container */
+        .csv-container {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        .csv-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .csv-container th, .csv-container td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        .csv-container caption {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* Scrollable code container */
+        .code-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Project 1: Stress-Strain Analysis</h1>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <section class="project-details">
+        <!-- Image with caption -->
+        <figure>
+            <img src="/Users/admin/Desktop/Leary/Stress_Strain.jpg" alt="Stress-Strain Curve of Material Specimen">
+            <figcaption>This Stress-Strain curve shows the elastic region, yield point, plastic deformation, and failure point of the material specimen calculated from experimental data.</figcaption>
+        </figure>
+    
+        <!-- Additional Images with captions -->
+        <figure>
+            <img src="/Users/admin/Desktop/Screenshot 2024-11-02 at 6.47.58 PM.png" alt="Points of interest">
+            <figcaption>The points of interest — ultimate strength, offset correction, stiffness, yield point, energy absorption capacity, modulus, and the plotted curve — are crucial for understanding the mechanical properties of materials. </figcaption>
+        </figure>
+
+        <!-- CSV Data Viewer -->
+        <div class="csv-container">
+            <table id="csv-table">
+                <caption>This is the experimental data that I used to display the curve and the points of interest! (Scrollable)</caption>
+                <thead>
+                    <tr>
+                        <th>Displacement (mm)</th>
+                        <th>Force (N)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- CSV data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Scrollable Code Section -->
+    <div class="code-container">
+        <pre>
+            import pandas as pd
+            import numpy as np
+            import matplotlib.pyplot as plt
+            import os
+            
+            # Select and import data
+            file_path = input("Enter the path to the CSV file: ")
+            
+            # Read the CSV file, specifying that the second row is the header
+            data = pd.read_csv(file_path, header=1)
+            
+            # Display the first few rows to inspect the data
+            print("Data preview:")
+            print(data.head())
+            
+            # Convert all columns to numeric, coercing errors to handle strings
+            data = data.apply(pd.to_numeric, errors='coerce')
+            
+            # Check for any NaN values after conversion
+            if data.isnull().values.any():
+                print("Non-numeric values found in the following rows:")
+                print(data[data.isnull().any(axis=1)])
+                raise ValueError("Data contains non-numeric values after conversion. Please check your CSV file.")
+            
+            # Extract columns assuming they are correctly ordered
+            D = data.iloc[:, 0]  # Time
+            B = data.iloc[:, 1]  # Extension
+            C = data.iloc[:, 2]  # Load
+            
+            # Find where the crosshead first touches the specimen
+            f_offset = 0
+            iii = 0
+            
+            for i in range(len(C) - 2):
+                if C[i] < 0.013:
+                    iii += 1
+                    offset = D[iii]
+            
+            A = D - offset
+            
+            # Check if A has at least 2 elements before accessing -2 index
+            if len(A) < 2:
+                raise ValueError("Not enough data points to perform calculations.")
+            
+            # Assign meaningful names to the data columns
+            Dist = A
+            Time = B
+            Force = C
+            Ultimate_Strength = np.max(C)
+            
+            # Determine the stopping point
+            mod_stop = 0
+            for i in range(len(C) - 2):
+                if C[i] >= Ultimate_Strength:
+                    mod_stop = i
+                    break
+            
+            # Initialize some variables
+            stiffness = 0
+            A_curve_auto = 0
+            
+            # Plot the data
+            plt.figure()
+            plt.plot(Dist, Force)
+            plt.grid()
+            plt.title(f'Stress-Strain {os.path.basename(file_path)}')
+            plt.xlabel('Linear Displacement (mm)')
+            plt.ylabel('Force (N)')
+            
+            # Look for a linear region and calculate stiffness for it
+            auto_mod = 0
+            stop = 0
+            int_val = 0
+            
+            for i in range(iii, mod_stop - 1002):
+                i_1 = (Force[i] - Force[i + 300]) / (Dist[i] - Dist[i + 300])
+                i_2 = (Force[i + 200] - Force[i + 400]) / (Dist[i + 200] - Dist[i + 400])
+                i_3 = (Force[i + 400] - Force[i + 600]) / (Dist[i + 400] - Dist[i + 600])
+                i_4 = (Force[i + 600] - Force[i + 800]) / (Dist[i + 600] - Dist[i + 800])
+                i_5 = (Force[i + 800] - Force[i + 1000]) / (Dist[i + 800] - Dist[i + 1000])
+            
+                if (i_1 >= i_2 * 0.95 and i_1 <= i_2 * 1.05 and
+                    i_1 >= i_4 * 0.95 and i_1 <= i_4 * 1.05 and
+                    i_1 >= i_5 * 0.95 and i_1 <= i_5 * 1.05):
+            
+                    F_i = Force[i]
+                    D_i = Dist[i]
+                    F_ii = Force[i + 1000]
+                    D_ii = Dist[i + 1000]
+                    auto_mod = (F_i - F_ii) / (D_i - D_ii)
+                    stop = 1
+                    int_val = 5
+                    break
+            
+                elif stop == 0 and (i_1 >= i_2 * 0.95 and i_1 <= i_2 * 1.05 and
+                                     i_1 >= i_3 * 0.95 and i_1 <= i_3 * 1.05 and
+                                     i_1 >= i_4 * 0.95 and i_1 <= i_4 * 1.05):
+            
+                    F_i = Force[i]
+                    D_i = Dist[i]
+                    F_ii = Force[i + 800]
+                    D_ii = Dist[i + 800]
+                    auto_mod = (F_i - F_ii) / (D_i - D_ii)
+                    stop = 1
+                    int_val = 4
+                    break
+            
+                elif stop == 0 and (i_1 >= i_2 * 0.95 and i_1 <= i_2 * 1.05 and
+                                     i_1 >= i_3 * 0.95 and i_1 <= i_3 * 1.05):
+            
+                    F_i = Force[i]
+                    D_i = Dist[i]
+                    F_ii = Force[i + 600]
+                    D_ii = Dist[i + 600]
+                    auto_mod = (F_i - F_ii) / (D_i - D_ii)
+                    stop = 1
+                    int_val = 3
+                    break
+            
+                elif stop == 0 and (i_1 >= i_2 * 0.95 and i_1 <= i_2 * 1.05):
+                    F_i = Force[i]
+                    D_i = Dist[i]
+                    F_ii = Force[i + 400]
+                    D_ii = Dist[i + 400]
+                    auto_mod = (F_i - F_ii) / (D_i - D_ii)
+                    stop = 1
+                    int_val = 2
+                    break
+            
+            # Look for enough change in slope to assume yield
+            Yield_Force_Auto = None
+            Yield_Distance_Auto = None
+            for i in range(iii, mod_stop - 52):
+                y_1 = (Force[i] - Force[i + 50]) / (Dist[i] - Dist[i + 50])
+            
+                if y_1 <= i_1 * 0.75 and Dist[i] > D_ii:
+                    Fy_i = Force[i]
+                    Dy_i = Dist[i]
+                    Fy_ii = Force[i + 50]
+                    Dy_ii = Dist[i + 50]
+            
+                    y_s = (Fy_i - Fy_ii) / (Dy_i - Dy_ii)
+                    Yield_Force_Auto = Fy_ii
+                    Yield_Distance_Auto = Dy_ii
+                    break
+            
+            if Yield_Force_Auto is not None and Yield_Distance_Auto is not None:
+                plt.scatter(Yield_Distance_Auto, Yield_Force_Auto)
+            
+            x_auto = A[2]
+            
+            ii = 0
+            for i in range(len(A) - 2):
+                if A[i] < x_auto:
+                    ii += 1
+            
+            plt.axvline(x=x_auto, color='r', linestyle='--')
+            plt.axvline(x=A[iii], color='g', linestyle='--')
+            
+            # Split the area under the curve and add them up
+            for i in range(iii, ii):
+                a_line = (A[i + 1] - A[i]) * C[i]
+                A_curve_auto += a_line
+            
+            # Plot the calculated slope line over the raw data
+            plt.plot([D_i, D_ii], [F_i, F_ii])
+            
+            # Define the output directory
+            output_dir = os.path.expanduser("~/Desktop/Leary")
+            
+            # Create the directory if it does not exist
+            os.makedirs(output_dir, exist_ok=True)
+            
+            # Save and close the figure
+            figname = os.path.join(output_dir, f'Stress_Strain_{os.path.basename(file_path)}.jpg')
+            plt.savefig(figname)
+            plt.close()
+            
+            # Create the data table
+            table = np.zeros((9, 1))
+            table[0, 0] = Ultimate_Strength
+            table[1, 0] = Yield_Force_Auto  # Automatically generated
+            table[2, 0] = Yield_Distance_Auto  # Automatically generated
+            table[3, 0] = auto_mod  # Automatically generated
+            table[4, 0] = A_curve_auto  # Automatically generated
+            
+            # Save the data to a .csv file
+            output_filename = os.path.join(output_dir, f'Points_of_Interest_for_{os.path.basename(file_path)}.csv')
+            np.savetxt(output_filename, table, delimiter=",")
+            print("Output saved successfully.")
+            
+        </pre>
+    </div>
+    
+    <footer class="footer">
+        <p class="footer-text">&copy; 2024 Rushil Gaddam.</p>
+    </footer>
+
+    <!-- JavaScript to load and display the CSV data -->
+    <script>
+        async function loadCSV() {
+            try {
+                const response = await fetch('/Users/admin/Downloads/Specimen Raw Data.csv'); // Replace with relative path if needed
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.text();
+                const tableBody = document.querySelector('#csv-table tbody');
+
+                // Split the CSV data into rows
+                const rows = data.split('\n');
+                rows.forEach((row, index) => {
+                    const cols = row.split(',');
+
+                    if (cols.length === 2 && index !== 0) {  // Skip the header row
+                        const tr = document.createElement('tr');
+                        cols.forEach(col => {
+                            const td = document.createElement('td');
+                            td.textContent = col.trim();
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading CSV:', error);
+            }
+        }
+
+        window.onload = loadCSV;
+    </script>
+</body>
+</html>
+
