@@ -22,7 +22,7 @@
     <section id="about" class="section about-section">
         <div class="section-container">
             <h2 class="section-title">About Me</h2>
-            <p class="section-text">Hi! I'm Rushil Gaddam, a passionate STEM student interested in programming, data science, and AI! I love solving problems and creating innovative solutions that can positively impact the world.</p>
+            <p class="section-text">Hi! I'm Rushil Gaddam, a passionate STEM student interested in programming, data science, and AI! Infact, I coded this portfolio. I love solving problems and creating innovative solutions that can positively impact the world.</p>
         </div>
     </section>
 
@@ -31,74 +31,82 @@
         <div class="section-container">
             <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
-                <div class="project-card" onclick="toggleDescription('project1')">
+                <div class="project-card" onclick="window.location.href='project1.html'">
                     <img src="/Users/admin/Desktop/Leary/Stress_Strain.jpg" alt="Project 1 Mizzou" class="project-image">
                     <div class="project-info">
                         <h3 class="project-title">1st Project!</h3>
                         <p class="project-description">Click for details!</p>
                     </div>
-                    <div class="project-description-text" id="project1-description" style="display:none;"></div>
                 </div>
-                <div class="project-card" onclick="toggleDescription('project2')">
+                <div class="project-card" onclick="window.location.href='project2.html'">
                     <img src="/Users/admin/Desktop/Screenshot 2024-10-31 at 9.01.59 PM.png" alt="Project 2 Mizzou" class="project-image">
                     <div class="project-info">
                         <h3 class="project-title">2nd Project!</h3>
                         <p class="project-description">Click for details!</p>
                     </div>
-                    <div class="project-description-text" id="project2-description" style="display:none;"></div>
                 </div>
-                <div class="project-card" onclick="toggleDescription('project3')">
+                <div class="project-card" onclick="window.location.href='project3.html'">
                     <img src="/Users/admin/Desktop/NCH data/out/lattice_Killer_CD8+_T-cells_Sup_f02.png" alt="Project 1 Nationwide" class="project-image">
                     <div class="project-info">
                         <h3 class="project-title">3rd Project!</h3>
                         <p class="project-description">Click for details!</p>
                     </div>
-                    <div class="project-description-text" id="project3-description" style="display:none;"></div>
                 </div>
-                <div class="project-card" onclick="toggleDescription('project4')">
-                    <img src="image/Oct_31_Screenshot_from_Convertio.jpg" alt="Project 1 website" class="project-image">
+                <div class="project-card" onclick="window.location.href='project4.html'">
+                    <img src="/Users/admin/Desktop/Screenshot 2024-10-31 at 9.16.54 PM.png" alt="Project 1 website" class="project-image">
                     <div class="project-info">
                         <h3 class="project-title">4th Project!</h3>
                         <p class="project-description">Click for details!</p>
                     </div>
-                    <div class="project-description-text" id="project4-description" style="display:none;"></div>
                 </div>
             </div>
-        </div>
+     </div>
     </section>
 
-    <!-- Research Section with 2 Research Cards -->
-    <section id="research" class="section research-section">
-        <div class="section-container">
-            <h2 class="section-title">Research</h2>
-            <div class="research-grid">
-                <div class="research-card" onclick="toggleDescription('research1')">
-                    <img src="/Users/admin/Downloads/Convertio Screenshot Oct 31.jpg" alt="Research 1" class="research-image">
-                    <div class="research-info">
-                        <h3 class="research-title">Research on AI in Education</h3>
-                        <p class="research-description">Click for details!</p>
-                    </div>
-                    <div class="research-description-text" id="research1-description" style="display:none;"></div>
+<!-- Research Section with Clickable Research Cards -->
+<section id="research" class="section research-section">
+    <div class="section-container">
+        <h2 class="section-title">Research</h2>
+        <div class="research-grid">
+            <!-- Research Card 1 -->
+            <div class="research-card" onclick="window.location.href='research1.html'">
+               
+                <div class="research-info">
+                    <h3 class="research-title">AIED 2024 demo paper</h3>
+                    <p class="research-description">Click for details!</p>
                 </div>
-                <div class="research-card" onclick="toggleDescription('research2')">
-                    <img src="" alt="Research 2" class="research-image">
-                    <div class="research-info">
-                        <h3 class="research-title">Manuscript about 3D Biplanar Reconstructions</h3>
-                        <p class="research-description">Click for details!</p>
-                    </div>
-                    <div class="research-description-text" id="research2-description" style="display:none;"></div>
+                
+            </div>
+            
+            <!-- Research Card 2 -->
+            <div class="research-card" onclick="window.location.href='research2.html'">
+                
+                <div class="research-info">
+                    <h3 class="research-title">Manuscript about 3D Biplanar Reconstructions (in progress to journal Spine Deformity)</h3>
+                    <p class="research-description">Click for details!</p>
                 </div>
+                
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- JavaScript for Toggling Descriptions -->
+<script>
+    function toggleDescription(researchId) {
+        const description = document.getElementById(researchId + '-description');
+        description.style.display = description.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+
 
     <section id="contact" class="section contact-section">
         <div class="section-container">
             <h2 class="section-title">Contact Me</h2>
-            <p class="section-text">If you'd like to get in touch, feel free to reach out via email or connect with me on social media!</p>
+            <p class="section-text">If you'd like to get in touch, feel free to reach or phone number!</p>
             <ul class="contact-list">
                 <li>Email: <a href="mailto:rushilgaddam5@gmail.com" class="contact-link">rushilgaddam5@gmail.com</a></li>
-                <li>LinkedIn: <a href="malito:614-653-1305" class="contact-link">614-653-1305</a></li>
+                <li>Phone: <a href="malito:614-653-1305" class="contact-link">614-653-1305</a></li>
             </ul>
         </div>
     </section>
