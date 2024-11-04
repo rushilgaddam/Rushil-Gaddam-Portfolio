@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1 Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styling for the project details section */
+        .project-details {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* Code container styling */
+        .code-container {
+            width: 300px;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+            font-family: monospace;
+            background-color: #f4f4f4;
+            margin: 20px 0;
+        }
+
+        /* Flexbox container for code and caption */
+        .code-caption-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+        }
+
+        .caption {
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Video container */
+        .video-container {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .video-container iframe {
+            width: 100%;
+            height: 170px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Project 4: Connected4Research</h1>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <section class="project-details">
+        
+                <!-- Code and caption in the same container -->
+<div class="code-caption-container">
+    <h4>home.html! This is where the action happens!</h4>
+    
+    <div class="code-container">
+        <pre>
+            &lt;!DOCTYPE html&gt;
+            &lt;html lang="en"&gt;
+            &lt;head&gt;
+                &lt;meta charset="UTF-8"&gt;
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                &lt;title&gt;Research Interests Selector&lt;/title&gt;
+                &lt;link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"&gt;
+                &lt;script src="https://code.jquery.com/jquery-3.6.0.min.js"&gt;&lt;/script&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                {% extends "base.html" %}
+            
+                {% block title %}Research Interests Selector{% endblock %}
+            
+                {% block content %}
+                &lt;header&gt;
+                    &lt;h1&gt;Welcome to Connected!&lt;/h1&gt;
+                &lt;/header&gt;
+            
+                &lt;div class="layout-container"&gt;
+                    &lt;div class="image-container"&gt;
+                        &lt;figure&gt;
+                            &lt;img src="{{ url_for('static', filename='images/featured-card_21_3291198_16400.jpg') }}" alt="AI Research Image" class="img-fluid"&gt;
+                            &lt;figcaption class="image-caption"&gt;Dr. Tanya Berger-Wolf and Students working on Artificial Intelligence research&lt;/figcaption&gt;
+                        &lt;/figure&gt;
+                        &lt;figure&gt;
+                            &lt;img src="{{ url_for('static', filename='images/byrd_center_header.jpg')}}" alt="Byrd" class="img-fluid"&gt;
+                            &lt;figcaption class="image-caption"&gt;The fascinating Byrd Polar and Climate Research Center&lt;/figcaption&gt;
+                        &lt;/figure&gt;
+                    &lt;/div&gt;
+            
+                    &lt;div id="content-container"&gt;
+                        &lt;p&gt;Use the form below to select up to 3 of your research interests, and Connected will match you up with some professors!&lt;/p&gt;
+                        &lt;form action="/result" method="post"&gt;
+                            &lt;label for="department"&gt;Select Department:&lt;/label&gt;
+                            &lt;select name="department" id="department"&gt;
+                                &lt;option value=""&gt;Select a Department&lt;/option&gt;
+                                {% for department in data.keys() %}
+                                    &lt;option value="{{ department }}"&gt;{{ department }}&lt;/option&gt;
+                                {% endfor %}
+                            &lt;/select&gt;
+                            &lt;br&gt;
+                            &lt;label for="research_area"&gt;Select Research Area:&lt;/label&gt;
+                            &lt;select name="research_area" id="research_area"&gt;
+                                &lt;option value=""&gt;Select a Research Area&lt;/option&gt;
+                            &lt;/select&gt;
+                            &lt;br&gt;
+                            &lt;label for="add_more"&gt;Would you like to add another interest? (yes/no)&lt;/label&gt;
+                            &lt;input type="text" id="add_more" name="add_more"&gt;
+                            &lt;br&gt;
+                            &lt;div id="additional-interests" style="display:none;"&gt;
+                                &lt;label for="department2"&gt;Select Second Department:&lt;/label&gt;
+                                &lt;select name="department2" id="department2"&gt;
+                                    &lt;option value=""&gt;Select a Department&lt;/option&gt;
+                                    {% for department in data.keys() %}
+                                        &lt;option value="{{ department }}"&gt;{{ department }}&lt;/option&gt;
+                                    {% endfor %}
+                                &lt;/select&gt;
+                                &lt;br&gt;
+                                &lt;label for="research_area2"&gt;Select Second Research Area:&lt;/label&gt;
+                                &lt;select name="research_area2" id="research_area2"&gt;
+                                    &lt;option value=""&gt;Select a Research Area&lt;/option&gt;
+                                &lt;/select&gt;
+                                &lt;br&gt;
+                                &lt;label for="add_more2"&gt;Would you like to add another interest? (yes/no)&lt;/label&gt;
+                                &lt;input type="text" id="add_more2" name="add_more2"&gt;
+                                &lt;br&gt;
+                                &lt;div id="third-interest" style="display:none;"&gt;
+                                    &lt;label for="department3"&gt;Select Third Department:&lt;/label&gt;
+                                    &lt;select name="department3" id="department3"&gt;
+                                        &lt;option value=""&gt;Select a Department&lt;/option&gt;
+                                        {% for department in data.keys() %}
+                                            &lt;option value="{{ department }}"&gt;{{ department }}&lt;/option&gt;
+                                        {% endfor %}
+                                    &lt;/select&gt;
+                                    &lt;br&gt;
+                                    &lt;label for="research_area3"&gt;Select Third Research Area:&lt;/label&gt;
+                                    &lt;select name="research_area3" id="research_area3"&gt;
+                                        &lt;option value=""&gt;Select a Research Area&lt;/option&gt;
+                                    &lt;/select&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;br&gt;
+                            &lt;input type="submit" value="Submit"&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+                &lt;div id="connected-research"&gt;
+                    &lt;h2&gt;Connected&lt;/h2&gt;
+                    &lt;div id="professor-list"&gt;
+                        {% for professor in faculty_list %}
+                        &lt;div class="professor-item"&gt;
+                            &lt;h3&gt;{{ professor.name }}&lt;/h3&gt;
+                            &lt;p&gt;Research Areas: {{ professor.research_areas | join(", ") }}&lt;/p&gt;
+                            &lt;p&gt;Email: &lt;a href="mailto:{{ professor.email }}"&gt;{{ professor.email }}&lt;/a&gt;&lt;/p&gt;
+                            &lt;p&gt;Website: &lt;a href="{{ professor.website }}" target="_blank"&gt;{{ professor.website }}&lt;/a&gt;&lt;/p&gt;
+                        &lt;/div&gt;
+                        {% endfor %}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+                &lt;footer&gt;
+                &lt;/footer&gt;
+            
+                &lt;script&gt;
+                    $(document).ready(function() {
+                        var researchAreas = {{ data | tojson | safe }};
+                
+                        function updateResearchAreas(department, researchAreaSelector) {
+                            var areas = researchAreas[department] || [];
+                            $(researchAreaSelector).empty();
+                            $(researchAreaSelector).append('&lt;option value=""&gt;Select a Research Area&lt;/option&gt;');
+                            $.each(areas, function(index, area) {
+                                $(researchAreaSelector).append('&lt;option value="' + area + '"&gt;' + area + '&lt;/option&gt;');
+                            });
+                        }
+                
+                        $('#department').change(function() {
+                            var department = $(this).val();
+                            updateResearchAreas(department, '#research_area');
+                        });
+                
+                        $('#department2').change(function() {
+                            var department = $(this).val();
+                            updateResearchAreas(department, '#research_area2');
+                        });
+                
+                        $('#department3').change(function() {
+                            var department = $(this).val();
+                            updateResearchAreas(department, '#research_area3');
+                        });
+                
+                        $('#add_more').change(function() {
+                            if (this.value.toLowerCase() === 'yes') {
+                                $('#additional-interests').show();
+                            } else {
+                                $('#additional-interests').hide();
+                                $('#department2').val('');
+                                $('#research_area2').empty().append('&lt;option value=""&gt;Select a Research Area&lt;/option&gt;');
+                                $('#add_more2').val('');
+                                $('#third-interest').hide();
+                                $('#department3').val('');
+                                $('#research_area3').empty().append('&lt;option value=""&gt;Select a Research Area&lt;/option&gt;');
+                            }
+                        });
+                
+                        $('#add_more2').change(function() {
+                            if (this.value.toLowerCase() === 'yes') {
+                                $('#third-interest').show();
+                            } else {
+                                $('#third-interest').hide();
+                                $('#department3').val('');
+                                $('#research_area3').empty().append('&lt;option value=""&gt;Select a Research Area&lt;/option&gt;');
+                            }
+                        });
+                
+                        $('.add-to-cart').click(function() {
+                            var professorName = $(this).data('name');
+                            $.post('/add_to_cart', { name: professorName }, function(response) {
+                                alert('Professor added to cart!');
+                            });
+                        });
+                    });
+                &lt;/script&gt;
+                {% endblock %}
+            &lt;/body&gt;
+            &lt;/html&gt;
+        </pre>
+    </div>
+</div>
+
+        <!-- Code and caption in the same container -->
+        <div class="code-caption-container">
+            <h4>Just some important code like routes and functions (there are over 4000 lines in reality, lol)</h4>
+          
+            <div class="code-container">
+                <pre>
+# Define functions
+def normalize_case(text):
+    return text.lower()
+
+def find_common_topics(user_interests, professor_interests):
+    # Normalize the case for comparison
+    normalized_user_interests = set(normalize_case(interest) for interest in user_interests)
+    normalized_professor_interests = set(normalize_case(interest) for interest in professor_interests)
+
+    common_topics = normalized_user_interests & normalized_professor_interests
+
+    # Return common topics with original case
+    return [interest for interest in professor_interests if normalize_case(interest) in common_topics]
+
+def suggest_professors(user_interests):
+    # Normalize the case for user interests
+    normalized_user_interests = set(normalize_case(interest) for interest in user_interests)
+
+    professors_with_common_interests = []
+    for professor in faculty_list:
+        # Normalize the case for professor research areas
+        normalized_professor_interests = set(normalize_case(area) for area in professor["research_areas"])
+
+        common_topics = normalized_user_interests & normalized_professor_interests
+        if common_topics:
+            # Find common topics with original case
+            common_topics_with_original_case = find_common_topics(user_interests, professor["research_areas"])
+            professors_with_common_interests.append({
+                "name": professor["name"],
+                "email": professor["email"],
+                "website": professor.get("website", "#"),  # Default to "#" if website is missing
+                "common_topics": common_topics_with_original_case
+            })
+
+    sorted_professors = sorted(professors_with_common_interests, key=lambda x: len(x["common_topics"]), reverse=True)
+    return sorted_professors
+
+@app.route('/')
+def home():
+    # Convert data to JSON string for JavaScript use
+    # Normalize data for consistent display in JavaScript
+    normalized_data = {college: [area.lower() for area in areas] for college, areas in data.items()}
+    research_areas_json = json.dumps(normalized_data)
+    return render_template('home.html', data=data, research_areas_json=research_areas_json)
+
+@app.route('/result', methods=['POST'])
+def result():
+    # Collect user interests from the form
+    user_interests = []
+
+    # Debug: Print received form data
+    print("Form Data:", request.form)
+
+    if 'research_area' in request.form and request.form['research_area']:
+        user_interests.append(request.form['research_area'])
+    if 'research_area2' in request.form and request.form['research_area2']:
+        user_interests.append(request.form['research_area2'])
+    if 'research_area3' in request.form and request.form['research_area3']:
+        user_interests.append(request.form['research_area3'])
+
+    # Debug: Print user interests
+    print("User Interests:", user_interests)
+
+    professors = suggest_professors(user_interests)
+
+    # Debug: Print professors found
+    print("Professors:", professors)
+
+    return render_template('result.html', user_interests=user_interests, professors=professors)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/research_areas')
+def research_areas():
+    # Example data; replace with actual data if needed
+
+    return render_template('research_areas.html', data=data)
+
+@app.route('/research_areas/<area>')
+def research_area(area):
+    research_area_name = area.replace('_', ' ').title()
+    description = research_info.get(area, "Description not available.")
+    return render_template('research_area_detail.html', area=research_area_name, description=description)
+
+@app.route('/search_professor', methods=['GET'])
+def search_professor():
+    return render_template('search_professor.html')
+
+@app.route('/search')
+def search():
+    query = request.args.get('q', '').lower()
+    professors = [prof for prof in faculty_list if query in prof['name'].lower()]
+    return jsonify(professors)
+
+@app.route('/professor/<name>')
+def professor_detail(name):
+    professor = next((prof for prof in faculty_list if prof['name'].lower() == name.lower()), None)
+    if professor:
+        return render_template('professor_detail.html', professor=professor)
+    else:
+        return "Professor not found", 404
+
+@app.route('/get_all_professors', methods=['GET'])
+def get_all_professors():
+    return jsonify(faculty_list)
+
+@app.route('/tips')
+def tips():
+    return render_template('tips.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+                </pre>
+            </div>
+        </div>
+
+        <!-- YouTube Video Embed -->
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/K8wFiR_UuoY?si=XDFNviQ7EGjw_8sd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <a href="https://connected4research.com" target="_blank" class="project-box">
+        <div class="project-title">Visit connected4research</div>
+    </a>
+
+    <div class="content">
+        <h2>Project 4: Research Connections</h2>
+        <p>This project focuses on helping students find research opportunities at the Ohio State University</p>
+        <p>Our goal is to help foster a community where finding, understanding, and being comfortable with research is normal</p>
+        
+    </div>
+
+</body>
+</html>
