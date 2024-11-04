@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 3 Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styling for the project details section */
+        .project-details {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* Excel link box styling */
+        .excel-link {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .excel-link h2 {
+            font-size: 1.1em;
+            color: #333;
+        }
+        .excel-link a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .excel-link a:hover {
+            background-color: #0056b3;
+        }
+        /* Scrollable code container */
+        .code-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">Project 3: Cancer</h1>
+        <nav class="navbar">
+            <a href="index.html" class="nav-link">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <section class="project-details">
+        <!-- Clickable Image with caption -->
+        <figure>
+            <a href="image1_details.html">
+                <img src="/Users/admin/Desktop/NCH data/out/lattice_Killer_CD8+_T-cells_Sup_m01.png" alt="lattice plots">
+            </a>
+            <figcaption>Learn more about lattice plots I created, click here</figcaption>
+        </figure>
+    
+        <!-- Additional Clickable Image with caption -->
+        <figure>
+            <a href="image2_details.html">
+                <img src="/Users/admin/Desktop/NCH data/out/helper_t-cells_density_deep.png" alt="Apex Data">
+            </a>
+            <figcaption>Learn more about the density calculations I found, click here</figcaption>
+        </figure>
+
+        
+    </section>
+
+ <!-- Scrollable Code Section -->
+ <div class="code-container">
+    <pre>
+        import numpy as np
+        import math as ma
+        import matplotlib.pyplot as plt
+        import pandas as pd
+        import os
+        
+        # --- Function Definitions ---
+        
+        def find_minmax(data):
+            """
+            Finds the minimum and maximum X and Y coordinates in the dataset.
+        
+            Parameters:
+                data (DataFrame): Pandas DataFrame containing 'Centroid X µm' and 'Centroid Y µm' columns.
+        
+            Returns:
+                tuple: (minx, xmax, miny, maxy)
+            """
+            minx = data['Centroid X µm'].min()
+            maxx = data['Centroid X µm'].max()
+            miny = data['Centroid Y µm'].min()
+            maxy = data['Centroid Y µm'].max()
+            
+            if pd.isna(minx) or pd.isna(maxx) or pd.isna(miny) or pd.isna(maxy):
+                raise ValueError("NaN values found in centroid coordinates")
+        
+            return minx, maxx, miny, maxy  # Fixed typo here
+        
+        def get_binned_lattice(data, minmaxL, step, counts_only=False):
+            """
+            Creates a binned lattice (grid) based on cell coordinates.
+            """
+            xmin, xmax, ymin, ymax = minmaxL
+            latXLen = ma.ceil((xmax - xmin) / step)
+            latYLen = ma.ceil((ymax - ymin) / step)
+        
+            # Ensure at least one bin in each direction
+            latXLen = max(1, latXLen)
+            latYLen = max(1, latYLen)
+        
+            # Initialize the lattice
+            binnedLat = [[0 for _ in range(latYLen)] for _ in range(latXLen)] if counts_only else [[list() for _ in range(latYLen)] for _ in range(latXLen)]
+        
+            for _, row in data.iterrows():
+                latX = int((row['Centroid X µm'] - xmin) / step)
+                latY = int((row['Centroid Y µm'] - ymin) / step)
+        
+                # Correct boundary handling
+                latX = min(latX, latXLen - 1)
+                latY = min(latY, latYLen - 1)
+        
+                if counts_only:
+                    binnedLat[latX][latY] += 1
+                else:
+                    binnedLat[latX][latY].append(row.to_list())
+        
+            return binnedLat
+        
+        def visualize_lattice(data, lattice_constant, title, save_path, highlight_data=None):
+            """
+            Visualizes the lattice grid with cell locations marked.
+            Optionally highlights a specific subset of cells on top.
+        
+            Parameters:
+                data (DataFrame): Data containing 'Centroid X µm' and 'Centroid Y µm' columns for background (specific patient and depth).
+                lattice_constant (float): Side length of each grid square.
+                title (str): Title for the plot.
+                save_path (str): Path to save the plot image.
+                highlight_data (DataFrame, optional): DataFrame of cells to highlight on top (specific cell type).
+            """
+            # Determine the plotting boundaries
+            minx, maxx, miny, maxy = find_minmax(data)
+        
+            # Calculate the width and height based on min and max coordinates
+            width = maxx - minx
+            height = maxy - miny
+        
+            # Initialize the plot with a white background
+            fig, ax = plt.subplots(figsize=(10, 10 * (height / width)))  # Adjust figure size to maintain aspect ratio
+            fig.patch.set_facecolor('white')  # Set figure background to white
+            ax.set_facecolor('white')          # Set axes background to white
+        
+            # Draw lattice lines first to ensure they appear beneath the cells
+            lattice_x = np.arange(minx, maxx + lattice_constant, lattice_constant)
+            lattice_y = np.arange(miny, maxy + lattice_constant, lattice_constant)
+        
+            for x in lattice_x:
+                ax.axvline(x, color='gray', linestyle='--', linewidth=0.5, zorder=1)
+            for y in lattice_y:
+                ax.axhline(y, color='gray', linestyle='--', linewidth=0.5, zorder=1)
+        
+            # Plot background cells with consistent light gray color
+            ax.scatter(
+                data['Centroid X µm'], data['Centroid Y µm'],
+                s=10, color='lightgray', label='Background Cells', zorder=2
+            )
+        
+            # Plot highlighted cells with bright red color, larger size, and black edges for clarity
+            if highlight_data is not None and not highlight_data.empty:
+                ax.scatter(
+                    highlight_data['Centroid X µm'],
+                    highlight_data['Centroid Y µm'],
+                    s=50,                 # Larger size for better visibility
+                    color='red',          # Bright red color
+                    edgecolors='black',   # Black edges for contrast
+                    linewidth=0.5,        # Edge linewidth
+                    label='Highlighted Cell Type',
+                    zorder=3
+                )
+        
+            # Set plot title and labels with consistent font sizes
+            ax.set_title(title, fontsize=16)
+            ax.set_xlabel('Centroid X µm', fontsize=12)
+            ax.set_ylabel('Centroid Y µm', fontsize=12)
+        
+            # Set limits for x and y axes to match the data's min and max
+            ax.set_xlim(minx, maxx)
+            ax.set_ylim(miny, maxy)
+        
+            # Ensure the aspect ratio is equal to maintain uniform grid squares
+            ax.set_aspect('equal', adjustable='datalim')
+        
+            # Add legend in the upper right corner
+            ax.legend(loc='upper right')
+        
+            # Remove any residual padding and ensure the layout is tight
+            plt.tight_layout()
+        
+            # Save the plot with high resolution and a white background
+            plt.savefig(save_path, dpi=300, facecolor='white')
+            plt.close()
+        
+        
+        
+        def find_area(lattice_constant, cell_list, doPrint=False):
+            """
+            Calculates the tissue area based on occupied lattice cells.
+        
+            Parameters:
+                lattice_constant (float): Side length of each grid square in micrometers (µm).
+                cell_list (DataFrame): DataFrame of cells (specific patient and depth).
+                doPrint (bool): Whether to print the area information.
+        
+            Returns:
+                tuple: (tissue area in mm², number of occupied lattice cells)
+            """
+            minmax = find_minmax(cell_list)
+            areaHist = get_binned_lattice(cell_list, minmax, lattice_constant, counts_only=True)
+        
+            # Count occupied lattice cells
+            areaCount = sum(1 for row in areaHist for cell in row if cell > 0)
+            
+            # Calculate area in µm²
+            area = areaCount * (lattice_constant ** 2)  # Area in µm²
+        
+            if doPrint:
+                mmarea = area / 1e6  # Convert to mm²
+                print(f"tissue area = {mmarea:.4f} mm²")
+                print(f"with lattice constant: {lattice_constant} µm")
+        
+            total_area_mm2 = area / 1e6  # Convert to mm²
+            return total_area_mm2, areaCount
+        
+        def calculate_density_for_cell_type(data, cell_type_conditions, cell_type_name, depth, patient_id, lattice_constant=20, plots_dir='/Users/admin/Desktop/NCH data/out'):
+            """
+            Calculates the density of a specific cell type within the tissue.
+        
+            Parameters:
+                data (DataFrame): Pandas DataFrame containing all cell data for the patient and depth.
+                cell_type_conditions (dict): Conditions to filter the cell type (e.g., {'CD3':1, 'CD8':1}).
+                cell_type_name (str): Name of the cell type.
+                depth (str): Depth category ('Deep' or 'Sup').
+                patient_id (str): Patient identifier (e.g., 'f01').
+                lattice_constant (float): The side length of each lattice square in micrometers (µm).
+                plots_dir (str): Directory to save plots.
+        
+            Returns:
+                tuple: (density in cells/mm², tissue area in mm²)
+            """
+            # Filter data for the specific cell type
+            cell_type_df = data.copy()
+            for marker, value in cell_type_conditions.items():
+                cell_type_df = cell_type_df[cell_type_df[marker] == value]
+            
+            if cell_type_df.empty:
+                print("No cells matching the conditions.")
+                return 0, 0
+            
+            # Calculate total tissue area using cells from the specific patient and depth
+            total_area_mm2, total_occupied_cells = find_area(lattice_constant, data, doPrint=True)
+            
+            # Number of specific cells
+            num_cells = len(cell_type_df)
+            
+            print(f"Number of cells matching conditions {cell_type_conditions}: {num_cells}")
+            print(f"Occupied lattice cells (Total Tissue Area): {total_occupied_cells}")
+            
+            # Ensure total_area is not zero to avoid division by zero
+            if total_area_mm2 == 0:
+                print("Total tissue area is zero. Cannot compute density.")
+                return 0, 0
+           
+            # Visualize the lattice with highlighted cell type
+            title = f"Lattice Grid for {cell_type_name} at {depth} Depth - Patient {patient_id}"
+            save_path = os.path.join(plots_dir, f"lattice_{cell_type_name.replace(' ', '_')}_{depth}_{patient_id}.png")
+            
+            visualize_lattice(
+                data=data,  # Background cells specific to patient and depth
+                lattice_constant=lattice_constant,
+                title=title,
+                save_path=save_path,
+                highlight_data=cell_type_df  # Highlight specific cell type
+            )
+            
+            density = num_cells / total_area_mm2  # Cells per mm²
+            print(f"Calculated Density: {density:.2f} cells/mm²")
+            return density, total_area_mm2
+        
+        def get_patient_density(patient_id, depth, cell_type_name, cell_type_conditions=None, lattice_constant=20, plots_dir='/Users/admin/Desktop/NCH data/out'):
+            """
+            Loads data for a specific patient and depth, then calculates density.
+        
+            Parameters:
+                patient_id (str): Patient identifier (e.g., 'f01').
+                depth (str): Depth category ('Deep' or 'Sup').
+                cell_type_name (str): Name of the cell type.
+                cell_type_conditions (dict): Conditions to filter cell types.
+                lattice_constant (float): The side length of each lattice square in micrometers (µm).
+                plots_dir (str): Directory to save plots.
+        
+            Returns:
+                tuple: (density in cells/mm², tissue area in mm²)
+            """
+            # Adjust depth string to match file naming conventions if necessary
+            depth_str = 'Deep' if depth.lower() == 'deep' else 'Sup'
+            path = f'/Users/admin/Desktop/NCH data/new_Rushil_Data/{patient_id}/Regular Combined Files/{patient_id}_{depth_str}_combined.csv'
+            
+            if not os.path.exists(path):
+                raise FileNotFoundError(f"File not found: {path}")
+            
+            df = pd.read_csv(path)
+            combined_df = df.dropna(subset=['Centroid X µm', 'Centroid Y µm'])
+            
+            if cell_type_conditions:
+                density, area = calculate_density_for_cell_type(
+                    combined_df, 
+                    cell_type_conditions, 
+                    cell_type_name, 
+                    depth, 
+                    patient_id,  # Pass patient_id here
+                    lattice_constant=lattice_constant, 
+                    plots_dir=plots_dir
+                )
+                return density, area
+            else:
+                raise ValueError("cell_type_conditions must be provided")
+        
+        def plot_density(depth, cell_type_name, avg_female, avg_male, densities_female, densities_male, plots_dir):
+            """
+            Plots and saves cell density comparison for a specific depth and cell type.
+        
+            Parameters:
+                depth (str): Depth category ('Deep' or 'Sup').
+                cell_type_name (str): Name of the cell type.
+                avg_female (float): Average density for female patients.
+                avg_male (float): Average density for male patients.
+                densities_female (dict): Densities for each female patient.
+                densities_male (dict): Densities for each male patient.
+                plots_dir (str): Directory to save plots.
+            """
+            # Categories and averages
+            categories = ['Female', 'Male']
+            averages = [avg_female, avg_male]
+            
+            # Positions
+            x = np.arange(len(categories))
+            width = 0.6  # Width of the bars
+        
+            fig, ax = plt.subplots(figsize=(10, 6))
+        
+            # Plot average densities as bars with fixed colors
+            bars = ax.bar(x, averages, width, color=['deeppink', 'darkblue'], alpha=0.6, label='_nolegend_')
+        
+            handled_labels = set()  # To prevent duplicate labels in legend
+        
+            # Female and Male patients
+            for i, category in enumerate(categories):
+                if category == 'Female':
+                    patient_ids = list(densities_female.keys())
+                    patient_densities = list(densities_female.values())
+                    dot_colors = ['pink', 'lightcoral']
+                else:
+                    patient_ids = list(densities_male.keys())
+                    patient_densities = list(densities_male.values())
+                    dot_colors = ['lightblue', 'royalblue']
+                
+                for j, (pid, density) in enumerate(zip(patient_ids, patient_densities)):
+                    label = pid if pid not in handled_labels else "_nolegend_"
+                    ax.scatter(
+                        x[i], 
+                        density, 
+                        color=dot_colors[j % len(dot_colors)], 
+                        zorder=5, 
+                        label=label, 
+                        s=100
+                    )
+                    handled_labels.add(pid)
+        
+            # Setting labels and title
+            ax.set_xlabel('Gender', fontsize=14)
+            ax.set_ylabel('Cell Density (cells/mm²)', fontsize=14)
+            ax.set_title(f'Cell Density of {cell_type_name} ({depth})', fontsize=16)
+            ax.set_xticks(x)
+            ax.set_xticklabels(categories)
+        
+            # Create legend without duplicate labels
+            handles, labels = ax.get_legend_handles_labels()
+            by_label = dict(zip(labels, handles))
+            ax.legend(by_label.values(), by_label.keys(), title='Patients', loc='upper right')
+        
+            plt.tight_layout()
+        
+            # Save the plot
+            plot_filename = f'{cell_type_name.lower().replace(" ", "_")}_density_{depth.lower()}.png'
+            plot_path = os.path.join(plots_dir, plot_filename)
+            plt.savefig(plot_path, dpi=300)
+            plt.close()
+        
+        
+        
+        # --- Main Code Execution ---
+        
+        if __name__ == "__main__":
+            # Define cell types and their conditions
+            cell_types = {
+                'Killer CD8+ T-cells': {'CD3': 1, 'CD8': 1},
+                'Activated Killer T-cells': {'CD3': 1, 'CD8': 1, 'Tim3': 0, 'PD-1': 1},
+                'Exhausted Killer T-cells': {'CD3': 1, 'CD8': 1, 'Tim3': 1},
+                'Inhibitory Killer T-cells': {'CD3': 1, 'CD8': 1, 'Tim3': 1, 'ICOS': 1},
+                'Helper T-cells': {'CD3': 1, 'CD4': 1},
+                'Activated Helper T-cells': {'CD3': 1, 'CD4': 1, 'PD-1': 1},
+                'Inhibitory Helper T-cells': {'CD3': 1, 'CD4': 1, 'ICOS': 1},
+            }
+            
+            # List of patient IDs
+            female_patients = ['f01', 'f02']
+            male_patients = ['m01', 'm02']
+            
+            # Define plots directory
+            plots_dir = '/Users/admin/Desktop/NCH data/out'
+            if not os.path.exists(plots_dir):
+                os.makedirs(plots_dir)
+            
+            # Define lattice constant (step size) in micrometers
+            lattice_constant = 20  # Adjusted to 20 µm; consider revising based on your data
+            
+            # Initialize list to store slide areas
+            slide_areas = []
+        
+            # Calculate densities for each cell type
+            for cell_type_name, cell_type_conditions in cell_types.items():
+                # --- Deep Tissue Calculations ---
+                densities_deep_female = {}
+                densities_deep_male = {}
+                
+                for patient_id in female_patients:
+                    try:
+                        print(f"\nCalculating density for Female Patient: {patient_id}, Depth: Deep, Cell Type: {cell_type_name}")
+                        density, area = get_patient_density(
+                            patient_id, 
+                            depth='Deep', 
+                            cell_type_name=cell_type_name, 
+                            cell_type_conditions=cell_type_conditions, 
+                            lattice_constant=lattice_constant, 
+                            plots_dir=plots_dir
+                        )
+                        densities_deep_female[patient_id] = density
+                        
+                        # Store slide area
+                        slide_areas.append({
+                            'Patient_ID': patient_id,
+                            'Depth': 'Deep',
+                            'Cell_Type': cell_type_name,
+                            'Area_mm2': area
+                        })
+                    except FileNotFoundError as e:
+                        print(e)
+                    except Exception as e:
+                        print(f"Error processing {patient_id} Deep: {e}")
+                
+                for patient_id in male_patients:
+                    try:
+                        print(f"\nCalculating density for Male Patient: {patient_id}, Depth: Deep, Cell Type: {cell_type_name}")
+                        density, area = get_patient_density(
+                            patient_id, 
+                            depth='Deep', 
+                            cell_type_name=cell_type_name, 
+                            cell_type_conditions=cell_type_conditions, 
+                            lattice_constant=lattice_constant, 
+                            plots_dir=plots_dir
+                        )
+                        densities_deep_male[patient_id] = density
+                        
+                        # Store slide area
+                        slide_areas.append({
+                            'Patient_ID': patient_id,
+                            'Depth': 'Deep',
+                            'Cell_Type': cell_type_name,
+                            'Area_mm2': area
+                        })
+                    except FileNotFoundError as e:
+                        print(e)
+                    except Exception as e:
+                        print(f"Error processing {patient_id} Deep: {e}")
+                
+                # Calculate average densities for Deep
+                average_density_female_deep = np.mean(list(densities_deep_female.values())) if densities_deep_female else 0
+                average_density_male_deep = np.mean(list(densities_deep_male.values())) if densities_deep_male else 0
+                
+                # Print density information for Deep
+                print(f"\nCell Density for {cell_type_name} (Deep):")
+                print(f"  Female Patients Deep:")
+                for pid, density in densities_deep_female.items():
+                    print(f"    {pid}: {density:.2f} cells/mm²")
+                
+                print(f"  Male Patients Deep:")
+                for pid, density in densities_deep_male.items():
+                    print(f"    {pid}: {density:.2f} cells/mm²")
+                
+                # Plot and save Deep densities
+                plot_density(
+                    depth='Deep', 
+                    cell_type_name=cell_type_name, 
+                    avg_female=average_density_female_deep, 
+                    avg_male=average_density_male_deep, 
+                    densities_female=densities_deep_female, 
+                    densities_male=densities_deep_male, 
+                    plots_dir=plots_dir
+                )
+        
+                # --- Superficial Tissue Calculations ---
+                densities_sup_female = {}
+                densities_sup_male = {}
+                
+                for patient_id in female_patients:
+                    try:
+                        print(f"\nCalculating density for Female Patient: {patient_id}, Depth: Sup, Cell Type: {cell_type_name}")
+                        density, area = get_patient_density(
+                            patient_id, 
+                            depth='Sup', 
+                            cell_type_name=cell_type_name, 
+                            cell_type_conditions=cell_type_conditions, 
+                            lattice_constant=lattice_constant, 
+                            plots_dir=plots_dir
+                        )
+                        densities_sup_female[patient_id] = density
+                        
+                        # Store slide area
+                        slide_areas.append({
+                            'Patient_ID': patient_id,
+                            'Depth': 'Superficial',
+                            'Cell_Type': cell_type_name,
+                            'Area_mm2': area
+                        })
+                    except FileNotFoundError as e:
+                        print(e)
+                    except Exception as e:
+                        print(f"Error processing {patient_id} Sup: {e}")
+                
+                for patient_id in male_patients:
+                    try:
+                        print(f"\nCalculating density for Male Patient: {patient_id}, Depth: Sup, Cell Type: {cell_type_name}")
+                        density, area = get_patient_density(
+                            patient_id, 
+                            depth='Sup', 
+                            cell_type_name=cell_type_name, 
+                            cell_type_conditions=cell_type_conditions, 
+                            lattice_constant=lattice_constant, 
+                            plots_dir=plots_dir
+                        )
+                        densities_sup_male[patient_id] = density
+                        
+                        # Store slide area
+                        slide_areas.append({
+                            'Patient_ID': patient_id,
+                            'Depth': 'Superficial',
+                            'Cell_Type': cell_type_name,
+                            'Area_mm2': area
+                        })
+                    except FileNotFoundError as e:
+                        print(e)
+                    except Exception as e:
+                        print(f"Error processing {patient_id} Sup: {e}")
+                
+                # Calculate average densities for Sup
+                average_density_female_sup = np.mean(list(densities_sup_female.values())) if densities_sup_female else 0
+                average_density_male_sup = np.mean(list(densities_sup_male.values())) if densities_sup_male else 0
+                
+                # Print density information for Sup
+                print(f"\nCell Density for {cell_type_name} (Superficial):")
+                print(f"  Female Patients Sup:")
+                for pid, density in densities_sup_female.items():
+                    print(f"    {pid}: {density:.2f} cells/mm²")
+                
+                print(f"  Male Patients Sup:")
+                for pid, density in densities_sup_male.items():
+                    print(f"    {pid}: {density:.2f} cells/mm²")
+                
+                # Plot and save Sup densities
+                plot_density(
+                    depth='Sup', 
+                    cell_type_name=cell_type_name, 
+                    avg_female=average_density_female_sup, 
+                    avg_male=average_density_male_sup, 
+                    densities_female=densities_sup_female, 
+                    densities_male=densities_sup_male, 
+                    plots_dir=plots_dir
+                )
+            
+            # After processing all cell types, save the slide areas to a CSV file
+            slide_areas_df = pd.DataFrame(slide_areas)
+            areas_save_path = os.path.join(plots_dir, 'slide_areas.csv')
+            slide_areas_df.to_csv(areas_save_path, index=False)
+            print(f"\nAll slide areas have been saved to {areas_save_path}")
+        
+        def calculate_spatial_correlation(cell_data_A, cell_data_B, lattice_constant):
+            """
+            Calculates the spatial correlation between two cell types using binned densities.
+            
+            Parameters:
+                cell_data_A (DataFrame): Coordinates of cell type A.
+                cell_data_B (DataFrame): Coordinates of cell type B.
+                lattice_constant (float): Side length of each grid square in micrometers (µm).
+                
+            Returns:
+                correlation: Calculated spatial correlation between the two cell types.
+            """
+            # Find min-max bounds for combined lattice creation
+            combined_data = pd.concat([cell_data_A, cell_data_B])
+            minmax = find_minmax(combined_data)
+            
+            # Create binned lattices for each cell type
+            lattice_A = get_binned_lattice(cell_data_A, minmax, lattice_constant, counts_only=True)
+            lattice_B = get_binned_lattice(cell_data_B, minmax, lattice_constant, counts_only=True)
+            
+            # Flatten the lattices to calculate correlation
+            lattice_A_flat = np.array([count for row in lattice_A for count in row])
+            lattice_B_flat = np.array([count for row in lattice_B for count in row])
+            
+            # Calculate correlation coefficient between the two lattices
+            correlation = np.corrcoef(lattice_A_flat, lattice_B_flat)[0, 1]
+            
+            return correlation
+        
+        def run_full_correlation_analysis(patient_ids, depths, cell_types, cell_conditions, lattice_constant=20, plots_dir='/Users/admin/Desktop/NCH data/out'):
+            """
+            Runs spatial correlation analysis across all combinations of patients, depths, and cell types.
+            
+            Parameters:
+                patient_ids (list): List of patient IDs (e.g., ['f01', 'f02', 'm01', 'm02']).
+                depths (list): List of depths to consider (e.g., ['Deep', 'Sup']).
+                cell_types (list): List of cell type names.
+                cell_conditions (dict): Dictionary mapping cell type names to their conditions.
+                lattice_constant (float): Side length of each grid square in micrometers (µm).
+                plots_dir (str): Directory to save plots.
+            """
+            # Store results for each permutation of cell type comparisons
+            correlation_results = []
+            
+            for patient_id_A in patient_ids:
+                for patient_id_B in patient_ids:
+                    for depth in depths:
+                        for cell_type_A, cell_conditions_A in cell_conditions.items():
+                            for cell_type_B, cell_conditions_B in cell_conditions.items():
+                                if cell_type_A != cell_type_B:
+                                    # Load data for patient A and filter for cell type A
+                                    density_A, tissue_area_A = get_patient_density(
+                                        patient_id_A, depth, cell_type_A, cell_conditions_A,
+                                        lattice_constant=lattice_constant, plots_dir=plots_dir
+                                    )
+                                    
+                                    # Load data for patient B and filter for cell type B
+                                    density_B, tissue_area_B = get_patient_density(
+                                        patient_id_B, depth, cell_type_B, cell_conditions_B,
+                                        lattice_constant=lattice_constant, plots_dir=plots_dir
+                                    )
+                                    
+                                    # Check if densities were calculated successfully
+                                    if density_A > 0 and density_B > 0:
+                                        correlation = calculate_spatial_correlation(density_A, density_B, lattice_constant)
+                                        
+                                        # Append results
+                                        correlation_results.append({
+                                            'Patient A': patient_id_A,
+                                            'Patient B': patient_id_B,
+                                            'Depth': depth,
+                                            'Cell Type A': cell_type_A,
+                                            'Cell Type B': cell_type_B,
+                                            'Correlation': correlation
+                                        })
+                                        
+                                        # Plot the correlation results
+                                        plot_title = f"Spatial Correlation: {cell_type_A} vs {cell_type_B} ({depth} Depth) | {patient_id_A}-{patient_id_B}"
+                                        plot_path = os.path.join(plots_dir, f"correlation_{cell_type_A}_{cell_type_B}_{depth}_{patient_id_A}_{patient_id_B}.png")
+                                        
+                                        plt.figure(figsize=(8, 6))
+                                        plt.title(plot_title)
+                                        plt.bar(["Correlation"], [correlation])
+                                        plt.ylabel("Correlation Coefficient")
+                                        plt.savefig(plot_path)
+                                        plt.close()
+                                    else:
+                                        print(f"Density calculation failed for {patient_id_A} or {patient_id_B}.")
+        
+            # Convert results to a DataFrame for saving and review
+            correlation_df = pd.DataFrame(correlation_results)
+            correlation_df.to_csv(os.path.join(plots_dir, "spatial_correlation_results.csv"), index=False)
+            print("Spatial correlation analysis completed and results saved.")
+        
+        # --- Sample Parameters ---
+        
+        # Define patient IDs
+        patient_ids = ['f01', 'f02', 'm01', 'm02']
+        
+        # Define depths
+        depths = ['Deep', 'Sup']
+        
+        # Define cell types and their conditions (examples)
+        cell_conditions = {
+            'Killer T-cells': {'CD3': 1, 'CD8': 1},
+            'Activated Killer T-cells': {'CD3': 1, 'CD8': 1, 'Tim3': 0, 'PD1': 1},
+            'Exhausted Killer T-cells': {'CD3': 1, 'CD8': 1, 'Tim3': 1},
+            'Helper T-cells': {'CD3': 1, 'CD4': 1},
+            'Activated Helper T-cells': {'CD3': 1, 'CD4': 1, 'PD1': 1},
+            'Inhibitory Helper T-cells': {'CD3': 1, 'CD4': 1, 'ICOS': 1}
+        }
+        
+        # Run full analysis
+        run_full_correlation_analysis(
+            patient_ids=patient_ids,
+            depths=depths,
+            cell_types=list(cell_conditions.keys()),
+            cell_conditions=cell_conditions,
+            lattice_constant=20,
+            plots_dir='/Users/admin/Desktop/NCH data/out'
+        )
+
+
+    </pre>
+</div>
+
+
+
+</script>
+</body>
+</html>
+
