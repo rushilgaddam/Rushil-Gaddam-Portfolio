@@ -352,21 +352,29 @@ body {
     padding: 50px;
 }
 
+/* Full-screen video for intro */
+.intro-video {
+    width: 100%; /* Make video full width */
+    height: 100vh; /* Set video to full viewport height */
+    object-fit: cover; /* Ensure the video covers the screen */
+}
+
+/* Normal video styling */
 .video-container {
-    width: 80%; /* Adjust width to make video bigger */
-    max-width: 1000px; /* Prevent video from being too wide */
-    background-color: #f0f0f0; /* Light background color */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow around video */
-    overflow: hidden; /* Hide overflow if any */
-    margin-bottom: 30px; /* Space between video and text */
+    width: 80%; /* Make the video smaller */
+    max-width: 1000px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin-bottom: 30px;
     padding: 15px;
 }
 
 .video-wrapper {
     position: relative;
     overflow: hidden;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%; /* 16:9 aspect ratio */
 }
 
 iframe {
@@ -377,6 +385,7 @@ iframe {
     height: 100%;
     border: none;
 }
+
 
 .about-text {
     text-align: center;
