@@ -3,91 +3,162 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif; /* New font */
 }
 
-/* General Styles */
+/* Body */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f0f4f8; /* Soft light background */
-    color: #333; /* Darker text for better readability */
-    padding: 20px;
+    background-color: #f4f7fc; /* Light pastel background for elegance */
+    color: #333;
+    padding: 40px;
+    line-height: 1.7;
+    font-size: 16px;
+    transition: background-color 0.5s ease; /* Smooth transition for background color */
+}
+
+body:hover {
+    background-color: #e6eff9; /* Subtle change on hover */
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, #007bff, #00c6ff); /* Gradient background */
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.navbar:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Hover effect for navbar */
+}
+
+.nav-item {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.1em;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: transform 0.3s ease, background 0.4s ease;
+}
+
+.nav-item:hover {
+    background-color: #0056b3;
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Parallax Section */
+.parallax {
+    position: relative;
+    background-image: url('https://example.com/your-beautiful-background.jpg'); /* Your beautiful background image */
+    background-attachment: fixed; /* Parallax effect */
+    background-size: cover; 
+    background-position: center;
+    height: 100vh; /* Full height of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+}
+
+/* Content inside parallax */
+.parallax .content {
+    z-index: 10; /* Make sure text is above the background */
+}
+
+/* Heading and paragraph styles */
+.parallax h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Shadow for better visibility */
+}
+
+.parallax p {
+    font-size: 1.2em;
+    max-width: 800px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Container */
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff; /* White background for content */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease;
+}
+
+.container:hover {
+    transform: translateY(-10px); /* Elevate on hover */
 }
 
 /* Typography */
 h1, h2, h3 {
-    color: #1a1a1a; /* Dark text for headings */
-    margin-bottom: 10px;
+    color: #333;
+    font-weight: 700;
 }
 
 h1 {
-    font-size: 2.5em;
-    border-bottom: 2px solid #007bff; /* Bottom border for emphasis */
+    font-size: 3em;
+    border-bottom: 3px solid #00c6ff;
     padding-bottom: 10px;
+    letter-spacing: 1px;
 }
 
 h2 {
-    font-size: 2em;
-    margin-top: 20px;
+    font-size: 2.4em;
+    margin-top: 30px;
 }
 
 h3 {
-    font-size: 1.5em;
-    margin-top: 15px;
+    font-size: 1.8em;
+    margin-top: 20px;
+    color: #007bff;
 }
 
-/* Navigation Bar */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    background-color: #007bff; /* Primary color for navbar */
-    padding: 15px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.nav-item {
-    color: white; /* White text for nav items */
+/* Button Styles */
+.button {
+    display: inline-block;
+    padding: 15px 35px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: #fff;
     text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s, transform 0.2s; /* Transition for hover effects */
+    font-size: 1.1em;
+    border-radius: 50px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.nav-item:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+.button:hover {
+    background: linear-gradient(135deg, #218838, #28a745);
+    transform: translateY(-3px); /* Slight lifting effect */
 }
 
 /* Box Styles */
 .box {
-    background-color: #e9ecef; /* Light gray for box background */
-    border: 1px solid #dee2e6; /* Border color for boxes */
-    border-radius: 10px;
+    background-color: #f0f4f8;
+    border: 1px solid #ddd;
+    border-radius: 15px;
     padding: 20px;
-    margin: 20px 0;
-    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions */
-    cursor: pointer; /* Pointer cursor to indicate clickability */
-    position: relative; /* For pseudo-elements */
-    overflow: hidden; /* Ensure no overflow */
+    margin: 30px 0;
+    transition: transform 0.3s, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
 }
 
 .box:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Box Pseudo-elements for Decorative Effect */
 .box::before {
     content: '';
     position: absolute;
@@ -95,190 +166,167 @@ h3 {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 123, 255, 0.1); /* Light blue overlay */
-    border-radius: 10px; /* Match box corners */
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.3s; /* Fade in on hover */
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .box:hover::before {
-    opacity: 1; /* Show overlay on hover */
+    opacity: 1;
 }
 
-/* Button Styles */
-.button {
-    display: inline-block;
-    padding: 12px 25px;
-    color: white; /* White text for buttons */
-    background-color: #28a745; /* Green button color */
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
-}
-
-.button:hover {
-    background-color: #218838; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-}
-
-/* Footer Styles */
-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #007bff; /* Consistent color with navbar */
-    color: white; /* White text */
-    border-radius: 10px;
-    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); /* Shadow on top for depth */
-}
-
-/* Link Styles */
-a {
-    color: #007bff; /* Link color */
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s; /* Transition for hover */
-}
-
-a:hover {
-    color: #0056b3; /* Darker blue on hover */
-}
-
-/* Form Styles */
-form {
-    background-color: #f8f9fa; /* Light background for forms */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Space below forms */
-}
-
-input[type="text"],
-input[type="email"],
-textarea {
-    width: 100%; /* Full width inputs */
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ced4da; /* Border for inputs */
-    border-radius: 5px;
-    transition: border-color 0.3s; /* Transition for focus */
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-textarea:focus {
-    border-color: #007bff; /* Blue border on focus */
-    outline: none; /* Remove default outline */
-}
-
-/* Card Layout for Professors */
+/* Professor Card Styles */
 .professor-card {
-    background-color: #ffffff; /* White background for cards */
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 15px 0;
-    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s ease;
 }
 
 .professor-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
 .professor-card h3 {
-    color: #007bff; /* Highlight professor names */
+    color: #007bff;
 }
 
-/* Projects and Research Sections */
+/* Projects & Research Sections */
 #projects, #research {
-    padding: 40px 0;
+    padding: 50px 0;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+#projects:hover, #research:hover {
+    background-color: #e9ecef;
 }
 
 .projects-title, .research-title {
     text-align: center;
-    font-size: 2em;
-    color: #1a1a1a;
-    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 40px;
+    text-transform: uppercase;
 }
 
 .projects-grid, .research-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
 }
 
 .project-card, .research-card {
-    background-color: #e9ecef;
-    border: 2px solid #dee2e6;
-    border-radius: 10px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s ease;
     text-decoration: none;
     color: inherit;
 }
 
 .project-card:hover, .research-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .project-image, .research-image {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
 }
 
 .project-info, .research-info {
-    padding: 10px;
+    padding: 15px;
     text-align: center;
 }
 
 .project-title, .research-title {
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: #007bff;
+}
+
+/* Footer */
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Form Styling */
+form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+input[type="text"], input[type="email"], textarea {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1.1em;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column; /* Stack navbar items vertically */
-        align-items: center;
+        flex-direction: column;
     }
 
     .container {
-        padding: 15px; /* Less padding on smaller screens */
+        padding: 15px;
     }
 
     h1 {
-        font-size: 2em; /* Smaller heading */
+        font-size: 2.5em;
     }
 
-    h2 {
-        font-size: 1.5em;
-    }
-
-    .box, .professor-card, .project-card, .research-card {
-        padding: 15px; /* Adjust box padding for smaller screens */
+    .button {
+        width: 100%;
+        margin: 10px 0;
     }
 
     .projects-grid, .research-grid {
-        grid-template-columns: 1fr; /* Single column layout */
+        grid-template-columns: 1fr; /* Single column layout on small screens */
     }
 }
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.8em; /* Further decrease heading size */
+        font-size: 2.2em;
     }
 
-    .button {
-        width: 100%; /* Full width buttons on mobile */
-        margin: 10px 0; /* Space around buttons */
+    .professor-card {
+        padding: 15px;
     }
 }
-
-
-
