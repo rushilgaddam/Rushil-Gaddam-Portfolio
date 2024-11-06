@@ -359,6 +359,13 @@ body {
     object-fit: cover; /* Ensure the video covers the screen */
 }
 
+/* Make videos inline with other images */
+.video-section {
+    display: flex;
+    flex-wrap: wrap; /* Allow the items to wrap */
+    justify-content: space-evenly; /* Distribute space evenly */
+}
+
 /* Normal video styling */
 .video-container {
     width: 25%; /* Reduce the width, make sure it's small */
