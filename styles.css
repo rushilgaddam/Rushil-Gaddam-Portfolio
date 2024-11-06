@@ -345,49 +345,61 @@ body {
     transition: background-color 0.5s ease; /* Smooth transition for background color */
 }
 
-/* About Section */
 .about-section {
     display: flex;
-    justify-content: space-between; /* Space out the video and text */
-    align-items: center; /* Vertically align them in the center */
-    padding: 20px;
-    height: 100vh; /* Make the section take full screen height */
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
 }
 
-/* Video Container */
 .video-container {
-    flex: 1; /* Take up half the space */
-    max-width: 600px; /* Max width for the video */
-    height: auto;
-    margin-right: 20px; /* Space between video and text */
+    width: 80%; /* Adjust width to make video bigger */
+    max-width: 1000px; /* Prevent video from being too wide */
+    background-color: #f0f0f0; /* Light background color */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow around video */
+    overflow: hidden; /* Hide overflow if any */
+    margin-bottom: 30px; /* Space between video and text */
+    padding: 15px;
 }
 
-/* About Text */
+.video-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 .about-text {
-    flex: 1; /* Take up the remaining space */
-    padding: 20px;
-    background: transparent; /* Removed the white background */
-    color: #333; /* Adjust text color */
+    text-align: center;
+    max-width: 800px;
+    margin-top: 30px;
 }
 
 .about-text h1 {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 2.5rem;
+    color: #333;
 }
 
 .about-text h4 {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    font-weight: 300;
+    font-size: 1.5rem;
+    color: #666;
 }
 
 .about-text p {
-    font-size: 1.1em;
-    max-width: 800px;
+    font-size: 1.1rem;
     color: #555;
     line-height: 1.6;
 }
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
