@@ -6,33 +6,66 @@
     <title>Project Details</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for the project header */
-        .header {
-            text-align: center;
-            padding: 20px;
+        /* General Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f3f4f6;
         }
         
-        /* Styling for image gallery section */
+        /* Header Styling */
+        .header {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .navbar {
+            margin-top: 10px;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            background-color: #337ab7;
+            border-radius: 5px;
+        }
+        .navbar a:hover {
+            background-color: #286090;
+        }
+        
+        /* Image Gallery Styling */
         .image-gallery {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
-        
-        /* Styling for individual image boxes */
         .image-box {
             width: 250px;
+            background-color: #fff;
             border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 10px;
-            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .image-box:hover {
+            transform: scale(1.05);
         }
         .image-box img {
             width: 100%;
             height: auto;
-            display: block;
+            border-radius: 5px;
             margin-bottom: 8px;
         }
         .image-box figcaption {
@@ -40,31 +73,33 @@
             color: #555;
         }
 
-        /* Explanation and code section styling */
+        /* Explanation Section Styling */
         .explanation {
-            padding: 20px;
+            padding: 40px 20px;
             max-width: 800px;
             margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.7;
         }
-        
-        .code-container {
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 0.9em;
+        .explanation h2 {
+            font-size: 1.5em;
             color: #333;
-            overflow-x: auto;
-            border-radius: 5px;
-            margin-top: 20px;
+            margin-top: 0;
+        }
+        .explanation p {
+            font-size: 1em;
+            color: #555;
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1 class="title">Project Details</h1>
+        <h1>Project Details</h1>
         <nav class="navbar">
-            <a href="index.html" class="nav-link">Back to Portfolio</a>
+            <a href="index.html">Back to Portfolio</a>
         </nav>
     </header>
 
@@ -72,37 +107,36 @@
     <section class="image-gallery">
         <!-- Image 1 -->
         <figure class="image-box">
-            <img src="image/lattice_Activated_Helper_T-cells_Sup_f02.png" alt="uno">
-            <figcaption>Density calculations for activated helper t-cells at a deep density</figcaption>
+            <img src="image/lattice_Activated_Helper_T-cells_Sup_f02.png" alt="Density calculations for activated helper t-cells">
+            <figcaption>Density calculations for activated helper T-cells at a deep density</figcaption>
         </figure>
         
         <!-- Image 2 -->
         <figure class="image-box">
-            <img src="/Users/admin/Desktop/NCH data/out/helper_t-cells_density_sup.png" alt="dos">
-            <figcaption>Density calculations for inhibitory helper t-cells at a superficial density</figcaption>
+            <img src="/Users/admin/Desktop/NCH data/out/helper_t-cells_density_sup.png" alt="Density calculations for inhibitory helper T-cells">
+            <figcaption>Density calculations for inhibitory helper T-cells at a superficial density</figcaption>
         </figure>
         
         <!-- Image 3 -->
         <figure class="image-box">
-            <img src="/Users/admin/Desktop/NCH data/out/killer_cd8+_t-cells_density_deep.png" alt="treis">
-            <figcaption>Density calculations for killer t-cells at a deep density</figcaption>
+            <img src="/Users/admin/Desktop/NCH data/out/killer_cd8+_t-cells_density_deep.png" alt="Density calculations for killer T-cells">
+            <figcaption>Density calculations for killer T-cells at a deep density</figcaption>
         </figure>
         
         <!-- Image 4 -->
         <figure class="image-box">
-            <img src="/Users/admin/Desktop/NCH data/out/exhausted_killer_t-cells_density_sup.png" alt="quatro">
-            <figcaption>Density calculations for exhausted killer t-cells at a density superficial</figcaption>
+            <img src="/Users/admin/Desktop/NCH data/out/exhausted_killer_t-cells_density_sup.png" alt="Density calculations for exhausted killer T-cells">
+            <figcaption>Density calculations for exhausted killer T-cells at a superficial density</figcaption>
         </figure>
     </section>
 
-    <!-- Explanation and Code Section -->
+    <!-- Explanation Section -->
     <section class="explanation">
         <h2>Project Explanation</h2>
-        <p> In cancer, immune cells often infiltrate tumors, either to attack the cancer cells or, unfortunately, to become suppressed by the tumor's defensive mechanisms. Calculating cell density, which measures the number of specific cells within a given area, provides insights into the level and intensity of immune response in various regions of the tumor. For example, a higher density of CD8+ killer t-cells may indicate a strong immune response aimed at targeting cancer cells. These densities were compared among gender and deep or superficial tissue
+        <p>
+            In cancer, immune cells often infiltrate tumors, either to attack the cancer cells or, unfortunately, to become suppressed by the tumor's defensive mechanisms. Calculating cell density, which measures the number of specific cells within a given area, provides insights into the level and intensity of immune response in various regions of the tumor. For example, a higher density of CD8+ killer T-cells may indicate a strong immune response aimed at targeting cancer cells. These densities were compared among gender and deep or superficial tissue.
         </p>
-        
-        
-        </div>
     </section>
 </body>
 </html>
+
