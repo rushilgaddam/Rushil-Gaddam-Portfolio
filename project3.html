@@ -11,21 +11,22 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            justify-content: center; /* Center the content */
         }
 
-        /* Styling for the bubbles */
+        /* Styling for the bubbles (now square and white) */
         .bubble {
             position: relative;
             display: inline-block;
-            padding: 15px 30px;
-            background-color: rgba(0, 123, 255, 0.8);
-            color: white;
+            padding: 20px;
+            background-color: white;
+            color: #333;
             font-size: 1.2em;
             font-weight: bold;
-            border-radius: 50%;
+            border-radius: 5px; /* Square corners with slight rounding */
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: bubble-animation 3s ease-in-out infinite;
         }
@@ -69,10 +70,30 @@
         /* Adjusting bubble layout for each item */
         .bubble-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
             gap: 20px;
+            justify-content: center;
             margin-top: 50px;
+        }
+
+        /* Scrollable code container */
+        .code-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        /* Styling for the YouTube video container */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -88,41 +109,40 @@
         <!-- Bubble container for the clickable bubbles -->
         <div class="bubble-container">
             <div class="bubble">
-                <a href="lattice_plots_details.html" style="color: white; text-decoration: none;">
+                <a href="lattice_plots_details.html" style="color: #333; text-decoration: none;">
                     <span>Learn more about lattice plots</span>
                 </a>
             </div>
 
             <div class="bubble">
-                <a href="density_calculations_details.html" style="color: white; text-decoration: none;">
+                <a href="density_calculations_details.html" style="color: #333; text-decoration: none;">
                     <span>Learn more about the density calculations</span>
                 </a>
             </div>
         </div>
     </section>
 
+    <!-- YouTube Video Embed for Project 3 -->
+    <div class="video-container">
+        <iframe width="300" height="200" src="https://www.youtube.com/embed/6i1IWJrb5Is?si=0wUsc7U2XgVsY4h-" 
+            title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
 
+    <!-- Scrollable Code Section -->
+    <div class="code-container">
+        <pre>
+            import numpy as np
+            import math as ma
+            import matplotlib.pyplot as plt
+            import pandas as pd
+            import os
+        </pre>
+    </div>
+</body>
+</html>
 
-         <!-- YouTube Video Embed for Project 3 -->
-         <div class="video-container">
-            <iframe width="300" height="200" src="https://www.youtube.com/embed/6i1IWJrb5Is?si=0wUsc7U2XgVsY4h-" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-
-
-        
-    </section>
-
- <!-- Scrollable Code Section -->
- <div class="code-container">
-    <pre>
-        import numpy as np
-        import math as ma
-        import matplotlib.pyplot as plt
-        import pandas as pd
-        import os
         
         # --- Function Definitions ---
         
