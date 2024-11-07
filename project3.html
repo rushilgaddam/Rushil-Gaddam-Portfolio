@@ -26,38 +26,13 @@
             border-radius: 5px; /* Square corners with slight rounding */
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: bubble-animation 3s ease-in-out infinite;
-        }
-
-        /* Animation for the bubbles */
-        @keyframes bubble-animation {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            25% {
-                transform: scale(1.1);
-                opacity: 0.9;
-            }
-            50% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            75% {
-                transform: scale(1.1);
-                opacity: 0.9;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .bubble:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(0, 123, 255, 0.8);
+            transform: scale(1.05); /* Slight scale for hover effect */
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
         }
 
         /* Styling for the bubble text */
@@ -109,18 +84,19 @@
         <!-- Bubble container for the clickable bubbles -->
         <div class="bubble-container">
             <div class="bubble">
-                <a href="lattice_plots_details.html" style="color: #333; text-decoration: none;">
+                <a href="image1_details.html" style="color: #333; text-decoration: none;">
                     <span>Learn more about lattice plots</span>
                 </a>
             </div>
 
             <div class="bubble">
-                <a href="density_calculations_details.html" style="color: #333; text-decoration: none;">
+                <a href="image2_details.html" style="color: #333; text-decoration: none;">
                     <span>Learn more about the density calculations</span>
                 </a>
             </div>
         </div>
     </section>
+
 
     <!-- YouTube Video Embed for Project 3 -->
     <div class="video-container">
