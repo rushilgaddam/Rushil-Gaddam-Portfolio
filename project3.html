@@ -13,65 +13,66 @@
             flex-wrap: wrap;
         }
 
-        /* Image and caption styling */
-        figure {
-            width: 300px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #f9f9f9;
-        }
-        figure img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        figcaption {
+        /* Styling for the bubbles */
+        .bubble {
+            position: relative;
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: rgba(0, 123, 255, 0.8);
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50%;
             text-align: center;
-            font-size: 0.9em;
-            color: #555;
-            border-top: 1px solid #ddd;
-            padding-top: 8px;
-            margin-top: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: bubble-animation 3s ease-in-out infinite;
         }
 
-        /* Excel link box styling */
-        .excel-link {
-            width: 300px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #f9f9f9;
-            margin-top: 20px;
+        /* Animation for the bubbles */
+        @keyframes bubble-animation {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            25% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            75% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 123, 255, 0.8);
+        }
+
+        /* Styling for the bubble text */
+        .bubble span {
+            display: block;
             text-align: center;
-            border-radius: 5px;
+            padding: 5px;
         }
-        .excel-link h2 {
-            font-size: 1.1em;
-            color: #333;
-        }
-        .excel-link a {
-            display: inline-block;
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .excel-link a:hover {
-            background-color: #0056b3;
-        }
-        /* Scrollable code container */
-        .code-container {
-            width: 100%;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            background-color: #f4f4f4;
-            padding: 15px;
-            margin-top: 20px;
-            font-family: monospace;
-            font-size: 0.9em;
-            color: #333;
+
+        /* Adjusting bubble layout for each item */
+        .bubble-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -84,21 +85,23 @@
     </header>
 
     <section class="project-details">
-        <!-- Clickable Image with caption -->
-        <figure>
-            <a href="image1_details.html">
-                <img src=" <img src="https://raw.githubusercontent.com/rushilgaddam/Rushil-Gaddam-Portfolio/main/image/lattice_Activated_Killer_T-cells_Sup_m01.png" alt="Activated Killer T-cells Image">" alt="lattice plots">
-            </a>
-            <figcaption>Learn more about lattice plots I created, click here</figcaption>
-        </figure>
-    
-        <!-- Additional Clickable Image with caption -->
-        <figure>
-            <a href="image2_details.html">
-                <img src="/Users/admin/Desktop/NCH data/out/helper_t-cells_density_deep.png" alt="Apex Data">
-            </a>
-            <figcaption>Learn more about the density calculations I found, click here</figcaption>
-        </figure>
+        <!-- Bubble container for the clickable bubbles -->
+        <div class="bubble-container">
+            <div class="bubble">
+                <a href="lattice_plots_details.html" style="color: white; text-decoration: none;">
+                    <span>Learn more about lattice plots</span>
+                </a>
+            </div>
+
+            <div class="bubble">
+                <a href="density_calculations_details.html" style="color: white; text-decoration: none;">
+                    <span>Learn more about the density calculations</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
 
          <!-- YouTube Video Embed for Project 3 -->
          <div class="video-container">
