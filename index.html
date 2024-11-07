@@ -5,12 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My STEM Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Centering the iframe video and giving it a nice outline */
+        .about-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 50px 0;
+        }
+
+        .intro-video {
+            width: 80%;
+            max-width: 800px; /* Ensures the video doesn't become too large on wide screens */
+            height: 450px; /* A bit taller for a better aspect ratio */
+            border: 5px solid #007BFF; /* Blue outline around the video */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow around the video */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Hover effect for the video frame */
+        .intro-video:hover {
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+
+        /* Styling for the header text */
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .welcome-text {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+        }
+
+        h4 {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.1em;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <h1 class="welcome-text">Welcome to My STEM Portfolio!</h1>
     </header>
-    
 
     <div class="about-section">
         <!-- Embed YouTube video in an iframe without extra wrapper -->
@@ -20,8 +83,8 @@
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen
-                style="width: 80%; height: 300px;"></iframe>
+                allowfullscreen>
+        </iframe>
     </div>
 
     <h1>Rushil Gaddam</h1>
@@ -29,10 +92,8 @@
     <p>
         Hi!!! My name is Rushil, and I'm a current high school student. Right now, I'm super interested in data science, NLP, and AI. I've created a lot of projects, like this <a href="https://github.com/rushilgaddam/vpet" target="_blank">virtual pet</a> or even this portfolio! <a href="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio" target="_blank">portfolio</a>. However, in this portfolio, I will highlight my most important projects and research.
     </p>
-</div>
 
-</body>
-</html>
+
 
     
 
