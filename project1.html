@@ -67,22 +67,20 @@
             padding-top: 8px;
             margin-top: 8px;
         }
-
-        /* Styling for the YouTube video container */
         .video-container {
-            width: 100%;
-            max-width: 700px;  /* Set a max width for the video */
-            margin: 0 auto;   /* Center the container */
-            padding: 10px;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin: 20px 0;
-            text-align: center;
-        }
-        .video-container iframe {
-            width: 100%;
-            height: 315px;  /* Adjusted height for better aspect ratio */
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
 
         /* CSV Data Viewer */
         .csv-container {
@@ -149,13 +147,10 @@
         </figure>
     </section>
 
-    <!-- YouTube Video Embed -->
-    <section class="video-container">
-        <iframe src="https://www.youtube.com/embed/j5qsD7I0u6M?si=T6jQEKkJxRQXZMWR" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </section>
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SHyNKw8m2-U?si=dLXq7X0aMw5RUnG5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
 
 </body>
 </html>
