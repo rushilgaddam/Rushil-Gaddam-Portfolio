@@ -6,12 +6,40 @@
     <title>Project 1 Details</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        /* Styling for the header */
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
         /* Styling for the project details section */
         .project-details {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
-            justify-content: space-between; /* Ensures the elements are spaced evenly */
+            justify-content: center; /* Center the content */
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         /* Image and caption styling */
@@ -19,10 +47,12 @@
             width: 300px;
             border: 1px solid #ddd;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
         figure img {
             width: 100%;
@@ -40,26 +70,29 @@
 
         /* Styling for the YouTube video container */
         .video-container {
-            width: 300px;
-            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 500px;
             padding: 10px;
-            background-color: #f9f9f9;
-            display: flex;
-            justify-content: center;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: center;
         }
         .video-container iframe {
             width: 100%;
-            height: 200px;
+            height: 300px;
         }
 
         /* CSV Data Viewer */
         .csv-container {
-            width: 300px;
+            width: 100%;
+            max-width: 600px;
             border: 1px solid #ddd;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             overflow-y: auto;
             max-height: 400px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .csv-container table {
             width: 100%;
@@ -77,7 +110,8 @@
             color: #555;
             margin-bottom: 10px;
         }
-         /* Scrollable code container */
+
+        /* Scrollable code container */
         .code-container {
             width: 100%;
             max-height: 300px;
@@ -112,20 +146,18 @@
             <img src="" alt="Points of interest">
             <figcaption>The points of interest — ultimate strength, offset correction, stiffness, yield point, energy absorption capacity, modulus, and the plotted curve — are crucial for understanding the mechanical properties of materials.</figcaption>
         </figure>
-
-        <!-- YouTube Video Embed -->
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/SHyNKw8m2-U?si=PTwXBl3BVpJNc5Yy" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
     </section>
 
-    
+    <!-- YouTube Video Embed -->
+    <section class="video-container">
+        <iframe src="https://www.youtube.com/embed/SHyNKw8m2-U?si=PTwXBl3BVpJNc5Yy" 
+            title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </section>
 
-</body>
-</html>
+
+
 
 
 
