@@ -6,11 +6,12 @@
     <title>Project 2 Details</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for the project details section */
+        /* Styling for project details section */
         .project-details {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         /* Image and caption styling */
@@ -19,6 +20,7 @@
             border: 1px solid #ddd;
             padding: 10px;
             background-color: #f9f9f9;
+            margin-bottom: 20px;
         }
         figure img {
             width: 100%;
@@ -32,32 +34,6 @@
             border-top: 1px solid #ddd;
             padding-top: 8px;
             margin-top: 8px;
-        }
-
-        /* CSV data viewer */
-        .csv-container {
-            width: 300px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #f9f9f9;
-            overflow-y: auto;
-            max-height: 400px;
-        }
-        .csv-container table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .csv-container th, .csv-container td {
-            padding: 5px;
-            border: 1px solid #ccc;
-            text-align: left;
-            font-size: 0.9em;
-        }
-        .csv-container caption {
-            font-size: 0.9em;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 10px;
         }
 
         /* Scrollable code container */
@@ -87,6 +63,7 @@
         .excel-link h2 {
             font-size: 1.1em;
             color: #333;
+            margin-bottom: 10px;
         }
         .excel-link a {
             display: inline-block;
@@ -103,45 +80,51 @@
     </style>
 </head>
 <body>
+
+    <!-- Header section -->
     <header class="header">
-        <h1 class="title">Project 2: Automated extraction & organization of 3D Reconstructions</h1>
+        <h1 class="title">Project 2: Automated Extraction & Organization of 3D Reconstructions</h1>
         <nav class="navbar">
             <a href="index.html" class="nav-link">Back to Portfolio</a>
         </nav>
     </header>
 
-    <section class="project-details">
-        <!-- Image with caption -->
-        <figure>
-            <img src="https://raw.githubusercontent.com/rushilgaddam/Rushil-Gaddam-Portfolio/main/image/GUI%20663x256.png" alt="GUI Design">
-            <figcaption>This GUI helps physicians extract measurement data taken from multiple assessments for an individual and/or many individuals, and the files that are inputted must be Full Spine 3D Reconstructions in sterEOS and named and organized in a specified format.</figcaption>
-        </figure>
-    
-       <!-- Additional Images with captions -->
-    <figure>
-        <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi.jpg?raw=true" alt="Apex Data">
-        <figcaption>
-            The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data.
-        </figcaption>
-    </figure>
+    <!-- Main content section -->
+    <main>
+        <!-- Project Details Section -->
+        <section class="project-details">
+            
+            <!-- Image with caption -->
+            <figure>
+                <img src="https://raw.githubusercontent.com/rushilgaddam/Rushil-Gaddam-Portfolio/main/image/GUI%20663x256.png" alt="GUI Design">
+                <figcaption>This GUI helps physicians extract measurement data taken from multiple assessments for an individual and/or many individuals, and the files that are inputted must be Full Spine 3D Reconstructions in sterEOS and named and organized in a specified format.</figcaption>
+            </figure>
+        
+            <!-- Additional Image with caption -->
+            <figure>
+                <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi.jpg?raw=true" alt="Apex Data">
+                <figcaption>The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data.</figcaption>
+            </figure>
 
+            <!-- YouTube Video Embed for Project 2 -->
+            <div class="video-container">
+                <iframe width="300" height="200" src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
 
-          <!-- YouTube Video Embed for Project 2 -->
-        <div class="video-container">
-            <iframe width="300" height="200" src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+            <!-- Link to Excel file -->
+            <div class="excel-link">
+                <h2>Download the Excel File</h2>
+                <a href="/Users/admin/Downloads/Project 1 Merged Data Template.xlsx" download>Click here to download the Excel file that shows how files are organized in Excel for multiple patients!</a>
+            </div>
+        </section>
+    </main>
 
-        <!-- Link to Excel file -->
-        <div class="excel-link">
-            <h2>Download the Excel File</h2>
-            <a href="/Users/admin/Downloads/Project 1 Merged Data Template.xlsx" download>Click here to download the Excel file that shows how files are organized in excel for multiple patients!</a>
-        </div>
-    </section>
 </body>
 </html>
+
 
     <!-- Scrollable Code Section -->
     <div class="code-container">
