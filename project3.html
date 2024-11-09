@@ -3,83 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 3 Details</title>
+    <title>Project 3: Cancer</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for the project details section */
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        /* Styling for the header */
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Project details layout */
         .project-details {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
-            justify-content: center; /* Center the content */
-        }
-
-        /* Styling for the bubbles (now square and white) */
-        .bubble {
-            position: relative;
-            display: inline-block;
-            padding: 20px;
-            background-color: white;
-            color: #333;
-            font-size: 1.2em;
-            font-weight: bold;
-            border-radius: 5px; /* Square corners with slight rounding */
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .bubble:hover {
-            transform: scale(1.05); /* Slight scale for hover effect */
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
-        }
-
-        /* Styling for the bubble text */
-        .bubble span {
-            display: block;
-            text-align: center;
-            padding: 5px;
-        }
-
-        /* Adjusting bubble layout for each item */
-        .bubble-container {
-            display: flex;
-            gap: 20px;
             justify-content: center;
-            margin-top: 50px;
+            align-items: flex-start;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Scrollable code container */
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+        }
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Video container styling */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 300px;
+            height: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        iframe {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Scrollable code container with animation */
         .code-container {
             width: 100%;
             max-height: 300px;
             overflow-y: auto;
             border: 1px solid #ddd;
-            background-color: #f4f4f4;
+            background-color: #f7f7f7;
             padding: 15px;
-            margin-top: 20px;
             font-family: monospace;
             font-size: 0.9em;
             color: #333;
+            position: relative;
         }
 
-        /* Styling for the YouTube video container */
-        .video-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            width: 100%;
-            max-width: 600px; /* Limit the max width */
-            margin-left: auto;
-            margin-right: auto; /* Center the video container */
+        /* Background animation */
+        @keyframes scrollBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
         }
 
-        /* Style for the iframe video */
-        .video-container iframe {
-            width: 100%;
-            height: 350px; /* Adjust the height for better fitting */
-            border-radius: 10px; /* Optional: Adds rounded corners for aesthetic */
+        .code-container {
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, #fff 25%, #fff 75%, #f0f0f0 75%, #f0f0f0);
+            background-size: 20px 20px;
+            animation: scrollBackground 4s linear infinite;
         }
     </style>
 </head>
@@ -92,29 +112,33 @@
     </header>
 
     <section class="project-details">
-        <!-- Bubble container for the clickable bubbles -->
-        <div class="bubble-container">
-            <div class="bubble">
-                <a href="image1_details.html" style="color: #333; text-decoration: none;">
-                    <span>Learn more about lattice plots</span>
-                </a>
-            </div>
+        <!-- Bubble for lattice plots -->
+        <figure>
+            <a href="image1_details.html">
+                <img src="path_to_your_image/lattice_plot_image.png" alt="Lattice Plot Image">
+                <figcaption>Learn more about lattice plots</figcaption>
+            </a>
+        </figure>
 
-            <div class="bubble">
-                <a href="image2_details.html" style="color: #333; text-decoration: none;">
-                    <span>Learn more about the density calculations</span>
-                </a>
-            </div>
+        <!-- Bubble for density calculations -->
+        <figure>
+            <a href="image2_details.html">
+                <img src="path_to_your_image/density_calculation_image.png" alt="Density Calculation Image">
+                <figcaption>Learn more about the density calculations</figcaption>
+            </a>
+        </figure>
+
+        <!-- Video Container -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/6i1IWJrb5Is?si=0wUsc7U2XgVsY4h-" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </section>
+</body>
+</html>
 
-    <!-- YouTube Video Embed for Project 3 -->
-    <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/6i1IWJrb5Is?si=0wUsc7U2XgVsY4h-" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
 
 
 
