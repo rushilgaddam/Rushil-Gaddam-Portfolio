@@ -31,12 +31,13 @@
             display: inline-block;
         }
 
-        /* Styling for the project details section */
+        /* Project details layout */
         .project-details {
             display: flex;
             gap: 30px;
             flex-wrap: wrap;
-            justify-content: center; /* Center the content */
+            justify-content: center;
+            align-items: flex-start;
             padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
@@ -48,80 +49,57 @@
             border: 1px solid #ddd;
             padding: 10px;
             background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            text-align: center;
         }
         figure img {
             width: 100%;
             height: auto;
-            display: block;
         }
         figcaption {
-            text-align: center;
             font-size: 0.9em;
             color: #555;
-            border-top: 1px solid #ddd;
-            padding-top: 8px;
             margin-top: 8px;
         }
+
+        /* Video container styling */
         .video-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-}
-
-iframe {
-    max-width: 100%;
-    height: auto;
-}
-
-
-        /* CSV Data Viewer */
-        .csv-container {
-            width: 100%;
-            max-width: 600px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #fff;
-            overflow-y: auto;
-            max-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 300px;
+            height: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        .csv-container table {
+        iframe {
             width: 100%;
-            border-collapse: collapse;
-        }
-        .csv-container th, .csv-container td {
-            padding: 5px;
-            border: 1px solid #ccc;
-            text-align: left;
-            font-size: 0.9em;
-        }
-        .csv-container caption {
-            font-size: 0.9em;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 10px;
+            height: auto;
         }
 
-        /* Scrollable code container */
+        /* Scrollable code container with animation */
         .code-container {
             width: 100%;
             max-height: 300px;
             overflow-y: auto;
             border: 1px solid #ddd;
-            background-color: #f4f4f4;
+            background-color: #f7f7f7;
             padding: 15px;
-            margin-top: 20px;
             font-family: monospace;
             font-size: 0.9em;
             color: #333;
+            position: relative;
+        }
+
+        /* Background animation */
+        @keyframes scrollBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .code-container {
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, #fff 25%, #fff 75%, #f0f0f0 75%, #f0f0f0);
+            background-size: 20px 20px;
+            animation: scrollBackground 4s linear infinite;
         }
     </style>
 </head>
@@ -141,24 +119,18 @@ iframe {
         </figure>
 
         <!-- Additional Image with caption -->
-       <figure>
-    <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi2.jpg?raw=true" alt="Points of interest">
-    <figcaption>The points of interest — ultimate strength, offset correction, stiffness, yield point, energy absorption capacity, modulus, and the plotted curve — are crucial for understanding the mechanical properties of materials.</figcaption>
-</figure>
-</section>
+        <figure>
+            <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi2.jpg?raw=true" alt="Points of interest">
+            <figcaption>The points of interest — ultimate strength, offset correction, stiffness, yield point, energy absorption capacity, modulus, and the plotted curve — are crucial for understanding the mechanical properties of materials.</figcaption>
+        </figure>
 
-
-
-    <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/SHyNKw8m2-U?si=dLXq7X0aMw5RUnG5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-
-
+        <!-- Video Container -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/SHyNKw8m2-U?si=dLXq7X0aMw5RUnG5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
 </body>
 </html>
-
-
-
 
 
 
