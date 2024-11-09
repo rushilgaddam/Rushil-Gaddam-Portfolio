@@ -3,104 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 1 Details</title>
+    <title>Project 4 Details</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for the project details section */
-       /* Styling for the project details section */
-.project-details {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 20px;
-}
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
 
-/* Image and caption styling */
-figure {
-    width: 300px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-figure img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-figcaption {
-    text-align: center;
-    font-size: 0.9em;
-    color: #555;
-    border-top: 1px solid #ddd;
-    padding-top: 8px;
-    margin-top: 8px;
-}
+        /* Styling for the header */
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
 
-/* Code container styling */
-.code-container {
-    width: 300px;
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 15px;
-    font-family: monospace;
-    background-color: #f4f4f4;
-    margin: 20px 0;
-}
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+        }
 
-/* Flexbox container for code and caption */
-.code-caption-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    margin-bottom: 20px;
-}
+        /* Project details layout */
+        .project-details {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.caption {
-    font-size: 0.9em;
-    color: #555;
-    text-align: center;
-    margin-top: 5px;
-}
+        /* Image and caption styling */
+        figure {
+            width: 300px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        figure img {
+            width: 100%;
+            height: auto;
+        }
+        figcaption {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 8px;
+        }
 
-/* Video container */
-.video-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px 0;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #f9f9f9;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.video-container iframe {
-    width: 100%;
-    height: 300px;  /* Adjust the height to be more proportionate */
-    border: none;
-    transition: all 0.3s ease;  /* Smooth zoom effect */
-}
+        /* Video container styling */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 600px;
+            height: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        iframe {
+            width: 100%;
+            height: 300px;  /* Adjust the height to be more proportionate */
+            border: none;
+        }
 
-.video-container:hover iframe {
-    transform: scale(1.1);  /* Zoom effect */
-}
+        /* Scrollable code container with animation */
+        .code-container {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            background-color: #f7f7f7;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #333;
+            position: relative;
+        }
 
+        /* Background animation */
+        @keyframes scrollBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .code-container {
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, #fff 25%, #fff 75%, #f0f0f0 75%, #f0f0f0);
+            background-size: 20px 20px;
+            animation: scrollBackground 4s linear infinite;
+        }
     </style>
-
+</head>
+<body>
     <header class="header">
         <h1 class="title">Project 4: Connected4Research</h1>
         <nav class="navbar">
             <a href="index.html" class="nav-link">Back to Portfolio</a>
         </nav>
     </header>
+
+    <section class="project-details">
+        <!-- Image with caption -->
+        <figure>
+            <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/lattice_Activated_Helper_T-cells_Sup_f02.png?raw=true" alt="Lattice Plot Image">
+            <figcaption>Learn more about lattice plots</figcaption>
+        </figure>
+
+        <!-- Density Calculation Image -->
+        <figure>
+            <a href="image2_details.html">
+                <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/activated_helper_t-cells_density_sup%20copy.png?raw=true" alt="Density Calculation Image">
+                <figcaption>Learn more about the density calculations</figcaption>
+            </a>
+        </figure>
+
+        <!-- Video Container -->
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/SHyNKw8m2-U?si=dLXq7X0aMw5RUnG5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </section>
+</body>
+</html>
+
 
     <section class="project-details">
         
