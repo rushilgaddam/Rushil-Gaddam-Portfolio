@@ -6,12 +6,41 @@
     <title>Project 2 Details</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styling for project details section */
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        /* Styling for the header */
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Project details layout */
         .project-details {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: flex-start;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         /* Image and caption styling */
@@ -19,35 +48,58 @@
             width: 300px;
             border: 1px solid #ddd;
             padding: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         figure img {
             width: 100%;
             height: auto;
-            display: block;
         }
         figcaption {
-            text-align: center;
             font-size: 0.9em;
             color: #555;
-            border-top: 1px solid #ddd;
-            padding-top: 8px;
             margin-top: 8px;
         }
 
-        /* Scrollable code container */
+        /* Video container styling */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 300px;
+            height: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        iframe {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Scrollable code container with animation */
         .code-container {
             width: 100%;
             max-height: 300px;
             overflow-y: auto;
             border: 1px solid #ddd;
-            background-color: #f4f4f4;
+            background-color: #f7f7f7;
             padding: 15px;
-            margin-top: 20px;
             font-family: monospace;
             font-size: 0.9em;
             color: #333;
+            position: relative;
+        }
+
+        /* Background animation */
+        @keyframes scrollBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .code-container {
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0), linear-gradient(45deg, #f0f0f0 25%, #fff 25%, #fff 75%, #f0f0f0 75%, #f0f0f0);
+            background-size: 20px 20px;
+            animation: scrollBackground 4s linear infinite;
         }
 
         /* Excel link box styling */
@@ -59,6 +111,7 @@
             margin-top: 20px;
             text-align: center;
             border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .excel-link h2 {
             font-size: 1.1em;
@@ -80,8 +133,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Header section -->
     <header class="header">
         <h1 class="title">Project 2: Automated Extraction & Organization of 3D Reconstructions</h1>
         <nav class="navbar">
@@ -89,41 +140,36 @@
         </nav>
     </header>
 
-    <!-- Main content section -->
-    <main>
-        <!-- Project Details Section -->
-        <section class="project-details">
-            
-            <!-- Image with caption -->
-            <figure>
-                <img src="https://raw.githubusercontent.com/rushilgaddam/Rushil-Gaddam-Portfolio/main/image/GUI%20663x256.png" alt="GUI Design">
-                <figcaption>This GUI helps physicians extract measurement data taken from multiple assessments for an individual and/or many individuals, and the files that are inputted must be Full Spine 3D Reconstructions in sterEOS and named and organized in a specified format.</figcaption>
-            </figure>
-        
-            <!-- Additional Image with caption -->
-            <figure>
-                <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi.jpg?raw=true" alt="Apex Data">
-                <figcaption>The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data.</figcaption>
-            </figure>
+    <section class="project-details">
+        <!-- Image with caption -->
+        <figure>
+            <img src="https://raw.githubusercontent.com/rushilgaddam/Rushil-Gaddam-Portfolio/main/image/GUI%20663x256.png" alt="GUI Design">
+            <figcaption>This GUI helps physicians extract measurement data taken from multiple assessments for an individual and/or many individuals, and the files that are inputted must be Full Spine 3D Reconstructions in sterEOS and named and organized in a specified format.</figcaption>
+        </figure>
 
-            <!-- YouTube Video Embed for Project 2 -->
-            <div class="video-container">
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
-                    title="YouTube video player" frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
+        <!-- Additional Image with caption -->
+        <figure>
+            <img src="https://github.com/rushilgaddam/Rushil-Gaddam-Portfolio/blob/main/image/hi.jpg?raw=true" alt="Apex Data">
+            <figcaption>The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data.</figcaption>
+        </figure>
 
-            <!-- Link to Excel file -->
-            <div class="excel-link">
-                <h2>Download the Excel File</h2>
-                <a href="/Users/admin/Downloads/Project 1 Merged Data Template.xlsx" download>Click here to download the Excel file that shows how files are organized in Excel for multiple patients!</a>
-            </div>
-        </section>
-    </main>
+        <!-- YouTube Video Embed for Project 2 -->
+        <div class="video-container">
+            <iframe width="300" height="200" src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
+                title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
 
+        <!-- Link to Excel file -->
+        <div class="excel-link">
+            <h2>Download the Excel File</h2>
+            <a href="/Users/admin/Downloads/Project 1 Merged Data Template.xlsx" download>Click here to download the Excel file that shows how files are organized in Excel for multiple patients!</a>
+        </div>
+    </section>
 </body>
 </html>
+
 
 
     <!-- Scrollable Code Section -->
