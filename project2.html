@@ -62,19 +62,25 @@
             margin-top: 8px;
         }
 
-        /* Video container styling */
-        .video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 300px;
-            height: auto;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        iframe {
-            width: 100%;
-            height: auto;
-        }
+
+    /* Updated Video container styling */
+    .video-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 800px; /* Increased max-width for larger video */
+        width: 100%; /* Make it responsive */
+        margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-container iframe {
+        width: 100%; /* Full width inside the container */
+        aspect-ratio: 16 / 9; /* Maintain a standard video aspect ratio */
+        height: auto; /* Maintain responsiveness */
+        border-radius: 8px; /* Optional: rounded corners */
+    }
+
 
         /* Scrollable code container with animation */
         .code-container {
@@ -153,13 +159,16 @@
             <figcaption>The project retrieves measurements from biplanar three-dimensional reconstructions, but it also offers the option to retrieve measurements from one or two levels above and below the instrumented segment. The Apex data focuses on capturing and analyzing rotation measurements at specific spinal levels relative to the apex of the curvature. This is an example of APEX data.</figcaption>
         </figure>
 
-        <!-- YouTube Video Embed for Project 2 -->
-        <div class="video-container">
-            <iframe width="100%" height="auto" src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
+       <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/TyQRRyrR9xc?si=dzRsSogWP_lczNU3" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+    </iframe>
+</div>
+
 
 
         <!-- Link to Excel file -->
